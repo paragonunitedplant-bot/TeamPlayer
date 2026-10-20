@@ -64,7 +64,6 @@
       font-weight: bold;
     }
 
-    /* Perbaikan tampilan baris form agar responsif dan tidak menumpuk */
     .player-row {
       display: flex;
       flex-direction: column;
@@ -123,18 +122,12 @@
     }
 
     .poster-container {
-      width: 100%;
-      max-width: 800px; /* Lebar maksimal agar pas di layar HP maupun PC */
-      margin: 0 auto;
       background-color: #0f172a;
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-      /* Menjaga bentuk rasio proporsional ala dokumen/poster */
-      aspect-ratio: 1 / 1.414; /* Rasio standar kertas A4 (Portrait) */
-      display: flex;
-      flex-direction: column;
     }
+
     .poster-header {
       background: linear-gradient(135deg, #0f172a, #1e3a8a);
       color: white;
@@ -172,11 +165,9 @@
 
     .poster-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr); /* 3 Kolom ke samping agar rapi dan muat 15 pemain */
-      gap: 10px;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
       padding: 15px;
-      overflow-y: auto; /* Agar bisa menampung 15 kartu dengan pas */
-      flex-grow: 1;
     }
 
     .card {
@@ -207,6 +198,7 @@
       text-transform: uppercase;
     }
 
+    /* Perbaikan agar foto tidak gepeng */
     .card img {
       width: 100%;
       height: 180px;
@@ -340,12 +332,12 @@
     function readFileAsDataURL(file) {
       return new Promise((resolve) => {
         if (!file) {
-          resolve("https://via.placeholder.com/150?text=No+Photo");
+          resolve(""); // Kosong jika tidak ada foto
           return;
         }
         const reader = new FileReader();
         reader.onload = () => resolve(reader.result);
-        reader.onerror = () => resolve("https://via.placeholder.com/150?text=Error");
+        reader.onerror = () => resolve("");
         reader.readAsDataURL(file);
       });
     }
@@ -373,7 +365,7 @@
       playersData.push({
         name: captainName,
         number: captainNumber,
-        photo: captainPhotoUrl,
+        photo: captainPhotoUrl || "https://via.placeholder.com/150?text=No+Photo",
         isCaptain: true
       });
 
@@ -390,15 +382,15 @@
         playersData.push({
           name: pName,
           number: pNum,
-          photo: photoUrl,
+          photo: photoUrl || "https://via.placeholder.com/150?text=No+Photo",
           isCaptain: false
         });
       }
 
       // Render Poster di Layar
-      renderPoster(teamName, teamLogoUrl, playersData);
+      renderPoster(teamName, teamLogoUrl || "https://via.placeholder.com/150?text=Logo", playersData);
 
-      // --- KIRIM KE GOOGLE SHEETS ---
+      // --- KIRIM KE GOOGLE SHEETS (TERMASUK FOTO) ---
       const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbwym3lrs_pUpeeiFUMo2XAy49wpUdit3oEQTiP_kfki7fvABpEOJ9yMiHF2XZi1JLCzLg/exec"; 
       
       fetch(GOOGLE_SHEET_URL, {
