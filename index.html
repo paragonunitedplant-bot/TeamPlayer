@@ -390,7 +390,7 @@
       // Render Poster di Layar
       renderPoster(teamName, teamLogoUrl, playersData);
 
-      // --- KIRIM KE GOOGLE SHEETS (SUDAH AKTIF) ---
+      // --- KIRIM KE GOOGLE SHEETS ---
       const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbwym3lrs_pUpeeiFUMo2XAy49wpUdit3oEQTiP_kfki7fvABpEOJ9yMiHF2XZi1JLCzLg/exec"; 
       
       fetch(GOOGLE_SHEET_URL, {
@@ -431,12 +431,4 @@
       });
 
       document.getElementById('formSection').style.display = 'none';
-      document.getElementById('posterSection').style.display = 'block';
-      window.scrollTo(0, 0);
-    }
-
-    // 4. Fungsi Download Poster Menjadi Gambar PNG
-    function downloadPoster() {
-      const captureElement = document.getElementById('captureArea');
-      
-      html2canvas(captureElement, { scale: 2, useCORS: true }).then(canvas => {
+      document.getElementById('poster
