@@ -123,12 +123,18 @@
     }
 
     .poster-container {
+      width: 100%;
+      max-width: 800px; /* Lebar maksimal agar pas di layar HP maupun PC */
+      margin: 0 auto;
       background-color: #0f172a;
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      /* Menjaga bentuk rasio proporsional ala dokumen/poster */
+      aspect-ratio: 1 / 1.414; /* Rasio standar kertas A4 (Portrait) */
+      display: flex;
+      flex-direction: column;
     }
-
     .poster-header {
       background: linear-gradient(135deg, #0f172a, #1e3a8a);
       color: white;
@@ -166,9 +172,11 @@
 
     .poster-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(3, 1fr); /* 3 Kolom ke samping agar rapi dan muat 15 pemain */
+      gap: 10px;
       padding: 15px;
+      overflow-y: auto; /* Agar bisa menampung 15 kartu dengan pas */
+      flex-grow: 1;
     }
 
     .card {
