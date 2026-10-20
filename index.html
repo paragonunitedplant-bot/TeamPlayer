@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pendaftaran Tim & Download Poster</title>
+  <title>Pendaftaran Tim & Poster Roster</title>
   <!-- Library html2canvas untuk Download Poster -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
@@ -288,7 +288,7 @@
         <div class="section-title">Anggota Pemain (14 Orang)</div>
         <div id="playersContainer"></div>
 
-        <button type="submit">Submit & Generate Poster Tim</button>
+        <button type="submit" id="submitBtn">Submit & Generate Poster Tim</button>
       </form>
     </div>
 
@@ -315,7 +315,7 @@
     const TOTAL_PLAYERS = 14; 
     const playersContainer = document.getElementById('playersContainer');
 
-    // 1. Membuat Input Form untuk 14 Pemain
+    // 1. Membuat Input Form untuk 14 Pemain secara otomatis
     for (let i = 1; i <= TOTAL_PLAYERS; i++) {
       const row = document.createElement('div');
       row.className = 'player-row';
@@ -348,6 +348,10 @@
     // 2. Menangani Submit Form
     document.getElementById('teamForm').addEventListener('submit', async function(e) {
       e.preventDefault();
+
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.textContent = "Memproses Data...";
+      submitBtn.disabled = true;
 
       const teamName = document.getElementById('team_name').value;
       const teamLogoFile = document.getElementById('team_logo').files[0];
@@ -383,20 +387,24 @@
         });
       }
 
-      // Render Poster
+      // Render Poster di Layar
       renderPoster(teamName, teamLogoUrl, playersData);
 
-      // --- SIMPAN KE GOOGLE SHEETS (OPSIONAL) ---
-      // Cara menghubungkan ke Google Sheets:
-      // Buat Google Apps Script Web App, lalu ganti URL di bawah ini dengan URL Web App Anda.
-      /*
-      const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbwym3lrs_pUpeeiFUMo2XAy49wpUdit3oEQTiP_kfki7fvABpEOJ9yMiHF2XZi1JLCzLg/exec";
+      // --- KIRIM KE GOOGLE SHEETS (SUDAH AKTIF) ---
+      const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbwym3lrs_pUpeeiFUMo2XAy49wpUdit3oEQTiP_kfki7fvABpEOJ9yMiHF2XZi1JLCzLg/exec"; 
+      
       fetch(GOOGLE_SHEET_URL, {
         method: "POST",
         body: JSON.stringify({ teamName, players: playersData }),
-        headers: { "Content-Type": "application/json" }
-      }).catch(err => console.log("Gagal kirim ke sheets:", err));
-      */
+        headers: { "Content-Type": "text/plain;charset=utf-8" }
+      })
+      .then(response => response.json())
+      .then(result => {
+        console.log("Berhasil tersimpan ke Google Sheets:", result);
+      })
+      .catch(err => {
+        console.log("Gagal kirim ke sheets:", err);
+      });
     });
 
     // 3. Fungsi Render Poster Tim
@@ -432,12 +440,3 @@
       const captureElement = document.getElementById('captureArea');
       
       html2canvas(captureElement, { scale: 2, useCORS: true }).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'poster-squad-tim.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-      });
-    }
-  </script>
-</body>
-</html>
