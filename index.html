@@ -294,7 +294,6 @@
 
     <!-- Tampilan Poster Tim -->
     <div id="posterSection">
-      <!-- Bagian yang akan di-capture jadi Gambar -->
       <div class="poster-container" id="captureArea">
         <div class="poster-header">
           <img id="displayTeamLogo" class="team-logo-img" src="" alt="Logo Tim">
@@ -431,4 +430,21 @@
       });
 
       document.getElementById('formSection').style.display = 'none';
-      document.getElementById('poster
+      document.getElementById('posterSection').style.display = 'block';
+      window.scrollTo(0, 0);
+    }
+
+    // 4. Fungsi Download Poster Menjadi Gambar PNG
+    function downloadPoster() {
+      const captureElement = document.getElementById('captureArea');
+      
+      html2canvas(captureElement, { scale: 2, useCORS: true }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'poster-squad-tim.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      });
+    }
+  </script>
+</body>
+</html>
