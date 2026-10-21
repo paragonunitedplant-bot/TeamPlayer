@@ -5,15 +5,99 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pendaftaran Tim Turnamen</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #f4f4f9; margin: 0; padding: 20px; }
-    .container { max-width: 600px; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin: auto; }
-    h2, h3 { color: #333; }
-    .form-group { margin-bottom: 15px; }
-    label { display: block; margin-bottom: 5px; font-weight: bold; }
-    input, select { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
-    button { background: #28a745; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; width: 100%; font-size: 16px; }
-    button:hover { background: #218838; }
-    .player-card { background: #f9f9f9; padding: 15px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px; }
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --bg-color: #f3f4f6;
+      --card-bg: #ffffff;
+      --text-color: #1f2937;
+      --border-color: #d1d5db;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 650px;
+      background: var(--card-bg);
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      margin: auto;
+    }
+    h2 {
+      text-align: center;
+      color: var(--primary);
+      margin-bottom: 30px;
+    }
+    h3 {
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 8px;
+      margin-top: 30px;
+      color: #374151;
+      font-size: 1.2rem;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    input[type="text"], input[type="number"], select {
+      width: 100%;
+      padding: 12px;
+      box-sizing: border-box;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input[type="file"] {
+      padding: 8px;
+      border: 1px dashed var(--border-color);
+      border-radius: 8px;
+      width: 100%;
+      background: #fafafa;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+    button {
+      background: var(--primary);
+      color: white;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1rem;
+      font-weight: bold;
+      margin-top: 20px;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: var(--primary-hover);
+    }
+    .player-card {
+      background: #f9fafb;
+      padding: 20px;
+      margin-bottom: 15px;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+    }
+    .player-card h4 {
+      margin-top: 0;
+      color: #4b5563;
+      font-size: 1rem;
+    }
   </style>
 </head>
 <body>
@@ -25,12 +109,12 @@
     <!-- Informasi Tim -->
     <div class="form-group">
       <label for="teamName">Nama Tim:</label>
-      <input type="text" id="teamName" required>
+      <input type="text" id="teamName" placeholder="Masukkan nama tim...">
     </div>
 
     <div class="form-group">
-      <label for="department">Departemen (Urut Abjad):</label>
-      <select id="department" required>
+      <label for="department">Departemen:</label>
+      <select id="department">
         <option value="">-- Pilih Departemen --</option>
         <option value="Downstream Liquid">Downstream Liquid</option>
         <option value="Downstream Powder">Downstream Powder</option>
@@ -48,25 +132,23 @@
 
     <div class="form-group">
       <label for="teamLogo">Upload Logo Tim:</label>
-      <input type="file" id="teamLogo" accept="image/*" required>
+      <input type="file" id="teamLogo" accept="image/*">
     </div>
 
-    <hr>
     <h3>Data Kapten</h3>
     <div class="form-group">
       <label for="captainName">Nama Kapten:</label>
-      <input type="text" id="captainName" required>
+      <input type="text" id="captainName" placeholder="Nama lengkap kapten...">
     </div>
     <div class="form-group">
       <label for="captainNumber">Nomor Punggung Kapten:</label>
-      <input type="number" id="captainNumber" required>
+      <input type="number" id="captainNumber" placeholder="Contoh: 10">
     </div>
     <div class="form-group">
       <label for="captainPhoto">Foto Kapten:</label>
-      <input type="file" id="captainPhoto" accept="image/*" required>
+      <input type="file" id="captainPhoto" accept="image/*">
     </div>
 
-    <hr>
     <h3>Data 14 Pemain Tambahan</h3>
     <div id="playersContainer"></div>
 
@@ -75,7 +157,7 @@
 </div>
 
 <script>
-  // Generate input otomatis untuk 14 pemain tambahan
+  // Generate input otomatis untuk 14 pemain tambahan (Tanpa Required)
   const playersContainer = document.getElementById('playersContainer');
   for (let i = 1; i <= 14; i++) {
     playersContainer.innerHTML += `
@@ -83,21 +165,20 @@
         <h4>Pemain ${i + 1}</h4>
         <div class="form-group">
           <label>Nama Pemain:</label>
-          <input type="text" class="playerName" required>
+          <input type="text" class="playerName" placeholder="Nama pemain...">
         </div>
         <div class="form-group">
           <label>Nomor Punggung:</label>
-          <input type="number" class="playerNumber" required>
+          <input type="number" class="playerNumber" placeholder="Nomor...">
         </div>
         <div class="form-group">
           <label>Foto Pemain:</label>
-          <input type="file" class="playerPhoto" accept="image/*" required>
+          <input type="file" class="playerPhoto" accept="image/*">
         </div>
       </div>
     `;
   }
 
-  // Fungsi helper konversi file ke Base64
   function toBase64(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -114,14 +195,12 @@
     btn.innerText = "Mengirim data & foto...";
 
     try {
-      // Ambil data logo & kapten
       const teamLogoFile = document.getElementById('teamLogo').files[0];
       const captainPhotoFile = document.getElementById('captainPhoto').files[0];
 
       const teamLogoBase64 = teamLogoFile ? await toBase64(teamLogoFile) : null;
       const captainPhotoBase64 = captainPhotoFile ? await toBase64(captainPhotoFile) : null;
 
-      // Ambil data 14 pemain
       const playerElements = document.querySelectorAll('.player-card');
       const players = [];
 
@@ -131,20 +210,21 @@
         const photoFile = card.querySelector('.playerPhoto').files[0];
         const photoBase64 = photoFile ? await toBase64(photoFile) : null;
 
-        players.push({ name, number, photo: photoBase64 });
+        // Masukkan data pemain meskipun ada yang kosong
+        players.push({ name: name || "-", number: number || "-", photo: photoBase64 });
       }
 
       const payload = {
-        teamName: document.getElementById('teamName').value,
-        department: document.getElementById('department').value,
+        teamName: document.getElementById('teamName').value || "Tanpa Nama",
+        department: document.getElementById('department').value || "-",
         teamLogo: teamLogoBase64,
-        captainName: document.getElementById('captainName').value,
-        captainNumber: document.getElementById('captainNumber').value,
+        captainName: document.getElementById('captainName').value || "-",
+        captainNumber: document.getElementById('captainNumber').value || "-",
         captainPhoto: captainPhotoBase64,
         players: players
       };
 
-      const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyMbpV07imywyF8YHLlKdh-4NQWMTy_RToVjD-8XtbNvw07sL7yisBBuvtn0x6geVZ4hw/exec"; // Ganti dengan URL /exec terbaru
+      const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyMbpV07imywyF8YHLlKdh-4NQWMTy_RToVjD-8XtbNvw07sL7yisBBuvtn0x6geVZ4hw/exec"; // Ganti dengan URL /exec terbaru Anda
 
       const response = await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
