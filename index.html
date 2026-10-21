@@ -441,3 +441,50 @@
       .then(result => {
         console.log("Berhasil tersimpan:", result);
       })
+      .catch(err => {
+        console.error("Gagal kirim ke Google Script:", err);
+      });
+    });
+
+    // 4. Fungsi Render Poster Tim
+    function renderPoster(teamName, teamLogoUrl, players) {
+      document.getElementById('displayTeamName').textContent = teamName;
+      document.getElementById('displayTeamLogo').src = teamLogoUrl;
+
+      const posterGrid = document.getElementById('posterGrid');
+      posterGrid.innerHTML = '';
+
+      players.forEach(player => {
+        const card = document.createElement('div');
+        card.className = `card ${player.isCaptain ? 'captain' : ''}`;
+        
+        card.innerHTML = `
+          ${player.isCaptain ? '<div class="badge-captain">Kapten</div>' : ''}
+          <img src="${player.photo}" alt="${player.name}">
+          <div class="card-info">
+            <div class="card-number">#${player.number}</div>
+            <div class="card-name">${player.name}</div>
+          </div>
+        `;
+        posterGrid.appendChild(card);
+      });
+
+      document.getElementById('formSection').style.display = 'none';
+      document.getElementById('posterSection').style.display = 'block';
+      window.scrollTo(0, 0);
+    }
+
+    // 5. Fungsi Download Poster Menjadi Gambar PNG
+    function downloadPoster() {
+      const captureElement = document.getElementById('captureArea');
+      
+      html2canvas(captureElement, { scale: 2, useCORS: true }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'poster-squad-tim.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      });
+    }
+  </script>
+</body>
+</html>
