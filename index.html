@@ -115,6 +115,11 @@
       background-color: #059669;
     }
 
+    button:disabled {
+      background-color: #9ca3af;
+      cursor: not-allowed;
+    }
+
     /* Styles Tampilan Poster */
     #posterSection {
       display: none;
@@ -198,7 +203,6 @@
       text-transform: uppercase;
     }
 
-    /* Perbaikan agar foto tidak gepeng */
     .card img {
       width: 100%;
       height: 180px;
@@ -253,7 +257,7 @@
         <div class="player-row">
           <div class="form-group">
             <label>Nama Tim</label>
-            <input type="text" id="team_name" placeholder="Contoh: Garuda FC">
+            <input type="text" id="team_name" placeholder="Contoh: Garuda FC" required>
           </div>
           <div class="form-group">
             <label>Logo Tim</label>
@@ -266,11 +270,11 @@
         <div class="player-row">
           <div class="form-group">
             <label>Nama Kapten</label>
-            <input type="text" id="captain_name" placeholder="Nama lengkap kapten">
+            <input type="text" id="captain_name" placeholder="Nama lengkap kapten" required>
           </div>
           <div class="form-group">
             <label>Nomor Punggung</label>
-            <input type="number" id="captain_number" placeholder="Contoh: 10">
+            <input type="number" id="captain_number" placeholder="Contoh: 10" required>
           </div>
           <div class="form-group">
             <label>Foto Kapten</label>
@@ -291,161 +295,4 @@
       <div class="poster-container" id="captureArea">
         <div class="poster-header">
           <img id="displayTeamLogo" class="team-logo-img" src="" alt="Logo Tim">
-          <h1 id="displayTeamName">NAMA TIM</h1>
-          <p>OFFICIAL SQUAD ROSTER (15 PEMAIN)</p>
-        </div>
-        <div class="poster-grid" id="posterGrid"></div>
-      </div>
-      
-      <div class="action-buttons">
-        <button type="button" class="btn-download" onclick="downloadPoster()">Download Poster (PNG)</button>
-        <button type="button" class="btn-reset" onclick="window.location.reload()">Isi Form Kembali</button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const TOTAL_PLAYERS = 14; 
-    const playersContainer = document.getElementById('playersContainer');
-
-    // 1. Membuat Input Form untuk 14 Pemain secara otomatis
-    for (let i = 1; i <= TOTAL_PLAYERS; i++) {
-      const row = document.createElement('div');
-      row.className = 'player-row';
-      row.innerHTML = `
-        <div class="form-group">
-          <label>Nama Pemain ${i + 1}</label>
-          <input type="text" class="p-name" placeholder="Nama lengkap">
-        </div>
-        <div class="form-group">
-          <label>Nomor Punggung</label>
-          <input type="number" class="p-number" placeholder="Contoh: ${i + 1}">
-        </div>
-        <div class="form-group">
-          <label>Foto Pemain</label>
-          <input type="file" class="p-photo" accept="image/*">
-        </div>
-      `;
-      playersContainer.appendChild(row);
-    }
-
-    function readFileAsDataURL(file) {
-      return new Promise((resolve) => {
-        if (!file) {
-          resolve(""); // Kosong jika tidak ada foto
-          return;
-        }
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = () => resolve("");
-        reader.readAsDataURL(file);
-      });
-    }
-
-    // 2. Menangani Submit Form
-    document.getElementById('teamForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
-
-      const submitBtn = document.getElementById('submitBtn');
-      submitBtn.textContent = "Memproses Data...";
-      submitBtn.disabled = true;
-
-      const teamName = document.getElementById('team_name').value || "Tim Tanpa Nama";
-      const teamLogoFile = document.getElementById('team_logo').files[0];
-      const teamLogoUrl = await readFileAsDataURL(teamLogoFile);
-
-      const playersData = [];
-
-      // Data Kapten
-      const captainName = document.getElementById('captain_name').value || "Kapten Tanpa Nama";
-      const captainNumber = document.getElementById('captain_number').value || "-";
-      const captainPhotoFile = document.getElementById('captain_photo').files[0];
-      const captainPhotoUrl = await readFileAsDataURL(captainPhotoFile);
-
-      playersData.push({
-        name: captainName,
-        number: captainNumber,
-        photo: captainPhotoUrl || "https://via.placeholder.com/150?text=No+Photo",
-        isCaptain: true
-      });
-
-      // Data 14 Pemain Lainnya
-      const names = document.querySelectorAll('.p-name');
-      const numbers = document.querySelectorAll('.p-number');
-      const photos = document.querySelectorAll('.p-photo');
-
-      for (let i = 0; i < TOTAL_PLAYERS; i++) {
-        const pName = names[i].value || `Pemain ${i + 2}`;
-        const pNum = numbers[i].value || "-";
-        const photoUrl = await readFileAsDataURL(photos[i].files[0]);
-
-        playersData.push({
-          name: pName,
-          number: pNum,
-          photo: photoUrl || "https://via.placeholder.com/150?text=No+Photo",
-          isCaptain: false
-        });
-      }
-
-      // Render Poster di Layar
-      renderPoster(teamName, teamLogoUrl || "https://via.placeholder.com/150?text=Logo", playersData);
-
-      // --- KIRIM KE GOOGLE SHEETS (TERMASUK FOTO) ---
-      const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbwym3lrs_pUpeeiFUMo2XAy49wpUdit3oEQTiP_kfki7fvABpEOJ9yMiHF2XZi1JLCzLg/exec"; 
-      
-      fetch(GOOGLE_SHEET_URL, {
-        method: "POST",
-        body: JSON.stringify({ teamName, players: playersData }),
-        headers: { "Content-Type": "text/plain;charset=utf-8" }
-      })
-      .then(response => response.json())
-      .then(result => {
-        console.log("Berhasil tersimpan ke Google Sheets:", result);
-      })
-      .catch(err => {
-        console.log("Gagal kirim ke sheets:", err);
-      });
-    });
-
-    // 3. Fungsi Render Poster Tim
-    function renderPoster(teamName, teamLogoUrl, players) {
-      document.getElementById('displayTeamName').textContent = teamName;
-      document.getElementById('displayTeamLogo').src = teamLogoUrl;
-
-      const posterGrid = document.getElementById('posterGrid');
-      posterGrid.innerHTML = '';
-
-      players.forEach(player => {
-        const card = document.createElement('div');
-        card.className = `card ${player.isCaptain ? 'captain' : ''}`;
-        
-        card.innerHTML = `
-          ${player.isCaptain ? '<div class="badge-captain">Kapten</div>' : ''}
-          <img src="${player.photo}" alt="${player.name}">
-          <div class="card-info">
-            <div class="card-number">#${player.number}</div>
-            <div class="card-name">${player.name}</div>
-          </div>
-        `;
-        posterGrid.appendChild(card);
-      });
-
-      document.getElementById('formSection').style.display = 'none';
-      document.getElementById('posterSection').style.display = 'block';
-      window.scrollTo(0, 0);
-    }
-
-    // 4. Fungsi Download Poster Menjadi Gambar PNG
-    function downloadPoster() {
-      const captureElement = document.getElementById('captureArea');
-      
-      html2canvas(captureElement, { scale: 2, useCORS: true }).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'poster-squad-tim.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-      });
-    }
-  </script>
-</body>
-</html>
+          <h1 id="displayTeamName">NAMA TIM
