@@ -5,464 +5,224 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pendaftaran Tim & Poster Roster</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  
   <style>
     :root {
       --primary: #1e3a8a;
-      --secondary: #3b82f6;
       --accent: #f59e0b;
       --bg: #f8fafc;
-      --text: #0f172a;
     }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+    body { background-color: var(--bg); padding: 15px; }
+    .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    h1 { text-align: center; color: var(--primary); margin-bottom: 20px; }
+    .section-title { background: var(--primary); color: #fff; padding: 8px 12px; border-radius: 6px; margin: 15px 0 10px; font-weight: bold; }
+    .captain-title { background: var(--accent); color: #000; }
+    .player-row { background: #f1f5f9; padding: 12px; border-radius: 8px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px; }
+    .form-group label { font-size: 0.85rem; font-weight: bold; color: #334155; }
+    .form-group input { width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; }
+    button { width: 100%; padding: 14px; background: #10b981; color: #fff; font-size: 1rem; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; margin-top: 15px; }
+    button:disabled { background: #9ca3af; }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      padding: 10px;
-    }
-
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      background: #ffffff;
-      padding: 15px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 15px;
-      color: var(--primary);
-      font-size: 1.5rem;
-    }
-
-    .section-title {
-      background-color: var(--primary);
-      color: white;
-      padding: 8px 12px;
-      border-radius: 6px;
-      margin: 15px 0 10px 0;
-      font-size: 1rem;
-    }
-
-    .team-title {
-      background-color: #0284c7;
-    }
-
-    .captain-title {
-      background-color: var(--accent);
-      color: #000;
-      font-weight: bold;
-    }
-
-    .player-row {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 12px;
-      padding: 12px;
-      background-color: #f1f5f9;
-      border-radius: 8px;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-    }
-
-    .form-group label {
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 4px;
-      color: #334155;
-    }
-
-    .form-group input {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #cbd5e1;
-      border-radius: 6px;
-      font-size: 0.95rem;
-      background-color: #fff;
-    }
-
-    button {
-      display: block;
-      width: 100%;
-      padding: 14px;
-      background-color: #10b981;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 1.1rem;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 20px;
-      transition: background 0.2s;
-    }
-
-    button:hover {
-      background-color: #059669;
-    }
-
-    button:disabled {
-      background-color: #9ca3af;
-      cursor: not-allowed;
-    }
-
-    #posterSection {
-      display: none;
-      margin-top: 20px;
-    }
-
-    .poster-container {
-      background-color: #0f172a;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-    }
-
-    .poster-header {
-      background: linear-gradient(135deg, #0f172a, #1e3a8a);
-      color: white;
-      text-align: center;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      border-bottom: 3px solid var(--accent);
-    }
-
-    .team-logo-img {
-      width: 90px;
-      height: 90px;
-      object-fit: contain;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 6px;
-      border-radius: 50%;
-      border: 2px solid var(--accent);
-    }
-
-    .poster-header h1 {
-      color: #ffffff;
-      font-size: 1.8rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin: 0;
-    }
-
-    .poster-header p {
-      color: #94a3b8;
-      font-size: 0.9rem;
-    }
-
-    .poster-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 12px;
-      padding: 15px;
-    }
-
-    .card {
-      background-color: #1e293b;
-      border-radius: 8px;
-      overflow: hidden;
-      text-align: center;
-      color: white;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      position: relative;
-      border: 1px solid #334155;
-    }
-
-    .card.captain {
-      border: 2px solid var(--accent);
-    }
-
-    .badge-captain {
-      position: absolute;
-      top: 6px;
-      right: 6px;
-      background-color: var(--accent);
-      color: black;
-      font-weight: bold;
-      padding: 3px 6px;
-      border-radius: 4px;
-      font-size: 0.7rem;
-      text-transform: uppercase;
-    }
-
-    .card img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      object-position: center;
-      background-color: #334155;
-    }
-
-    .card-info {
-      padding: 8px;
-    }
-
-    .card-number {
-      font-size: 1.4rem;
-      font-weight: 900;
-      color: var(--accent);
-      line-height: 1;
-    }
-
-    .card-name {
-      font-size: 0.9rem;
-      font-weight: 600;
-      margin-top: 4px;
-      word-break: break-word;
-    }
-
-    .action-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 15px;
-    }
-
-    .btn-download {
-      background-color: #3b82f6;
-    }
-    .btn-reset {
-      background-color: #ef4444;
-    }
+    /* Style Poster */
+    #posterSection { display: none; margin-top: 20px; }
+    .poster-container { background: #0f172a; padding: 15px; border-radius: 12px; color: #fff; text-align: center; }
+    .poster-header { border-bottom: 2px solid var(--accent); padding-bottom: 10px; margin-bottom: 15px; }
+    .poster-header h2 { color: var(--accent); text-transform: uppercase; }
+    .poster-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+    .card { background: #1e293b; border-radius: 8px; padding: 8px; text-align: center; position: relative; border: 1px solid #334155; }
+    .card.captain { border: 2px solid var(--accent); }
+    .badge { position: absolute; top: 4px; right: 4px; background: var(--accent); color: #000; font-size: 0.65rem; font-weight: bold; padding: 2px 4px; border-radius: 4px; }
+    .card img { width: 100%; height: 140px; object-fit: cover; border-radius: 4px; background: #334155; }
+    .card-num { color: var(--accent); font-weight: bold; font-size: 1.1rem; }
+    .card-name { font-size: 0.85rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .btn-download { background: #3b82f6; }
   </style>
 </head>
 <body>
 
   <div class="container">
     <div id="formSection">
-      <h1>Form Pendaftaran Tim</h1>
+      <h1>Pendaftaran Tim</h1>
       <form id="teamForm">
-        <div class="section-title team-title">Informasi Tim</div>
+        <div class="section-title">Informasi Tim</div>
         <div class="player-row">
           <div class="form-group">
             <label>Nama Tim</label>
-            <input type="text" id="team_name" placeholder="Contoh: Garuda FC" required>
-          </div>
-          <div class="form-group">
-            <label>Logo Tim</label>
-            <input type="file" id="team_logo" accept="image/*">
+            <input type="text" id="teamName" required placeholder="Contoh: Garuda FC">
           </div>
         </div>
 
-        <div class="section-title captain-title">Kapten Tim (Pemain 1)</div>
+        <div class="section-title captain-title">Kapten Tim</div>
         <div class="player-row">
           <div class="form-group">
             <label>Nama Kapten</label>
-            <input type="text" id="captain_name" placeholder="Nama lengkap kapten" required>
+            <input type="text" id="captainName" required placeholder="Nama Kapten">
           </div>
           <div class="form-group">
-            <label>Nomor Punggung</label>
-            <input type="number" id="captain_number" placeholder="Contoh: 10" required>
+            <label>No. Punggung</label>
+            <input type="number" id="captainNum" required placeholder="10">
           </div>
           <div class="form-group">
             <label>Foto Kapten</label>
-            <input type="file" id="captain_photo" accept="image/*">
+            <input type="file" id="captainPhoto" accept="image/*">
           </div>
         </div>
 
-        <div class="section-title">Anggota Pemain (14 Orang)</div>
-        <div id="playersContainer"></div>
+        <div class="section-title">14 Pemain Tambahan</div>
+        <div id="playersList"></div>
 
-        <button type="submit" id="submitBtn">Submit & Generate Poster Tim</button>
+        <button type="submit" id="submitBtn">Kirim & Buat Poster</button>
       </form>
     </div>
 
+    <!-- Tampilan Poster -->
     <div id="posterSection">
       <div class="poster-container" id="captureArea">
         <div class="poster-header">
-          <img id="displayTeamLogo" class="team-logo-img" src="" alt="Logo Tim">
-          <h1 id="displayTeamName">NAMA TIM</h1>
-          <p>OFFICIAL SQUAD ROSTER (15 PEMAIN)</p>
+          <h2 id="displayTeam">NAMA TIM</h2>
+          <p>OFFICIAL SQUAD ROSTER</p>
         </div>
         <div class="poster-grid" id="posterGrid"></div>
       </div>
-      
-      <div class="action-buttons">
-        <button type="button" class="btn-download" onclick="downloadPoster()">Download Poster (PNG)</button>
-        <button type="button" class="btn-reset" onclick="window.location.reload()">Isi Form Kembali</button>
-      </div>
+      <button class="btn-download" onclick="downloadPoster()">Download Poster (PNG)</button>
+      <button onclick="window.location.reload()" style="background:#ef4444;">Isi Ulang Form</button>
     </div>
   </div>
 
   <script>
-    const TOTAL_PLAYERS = 14; 
-    const playersContainer = document.getElementById('playersContainer');
+    // PASANG URL WEB APP GOOGLE APPS SCRIPT BERAKHIRAN /exec DI SINI
+    const GOOGLE_SCRIPT_URL = "PASANG_URL_EXEC_DI_SINI";
 
-    for (let i = 1; i <= TOTAL_PLAYERS; i++) {
-      const row = document.createElement('div');
-      row.className = 'player-row';
-      row.innerHTML = `
+    const playersList = document.getElementById('playersList');
+
+    // Generate 14 Form Pemain
+    for (let i = 1; i <= 14; i++) {
+      const div = document.createElement('div');
+      div.className = 'player-row';
+      div.innerHTML = `
         <div class="form-group">
           <label>Nama Pemain ${i + 1}</label>
-          <input type="text" class="p-name" placeholder="Nama lengkap">
+          <input type="text" class="p-name" placeholder="Nama Pemain">
         </div>
         <div class="form-group">
-          <label>Nomor Punggung</label>
-          <input type="number" class="p-number" placeholder="Contoh: ${i + 1}">
+          <label>No. Punggung</label>
+          <input type="number" class="p-num" placeholder="${i + 1}">
         </div>
         <div class="form-group">
           <label>Foto Pemain</label>
           <input type="file" class="p-photo" accept="image/*">
         </div>
       `;
-      playersContainer.appendChild(row);
+      playersList.appendChild(div);
     }
 
-    function compressAndReadFile(file, maxWidth = 300, maxHeight = 300, quality = 0.7) {
+    // Kompresi Gambar
+    function processImage(file) {
       return new Promise((resolve) => {
-        if (!file) {
-          resolve(""); 
-          return;
-        }
+        if (!file) resolve("");
         const reader = new FileReader();
         reader.onload = (e) => {
           const img = new Image();
           img.onload = () => {
             const canvas = document.createElement('canvas');
-            let width = img.width;
-            let height = img.height;
-
-            if (width > height) {
-              if (width > maxWidth) {
-                height = Math.round((height * maxWidth) / width);
-                width = maxWidth;
-              }
-            } else {
-              if (height > maxHeight) {
-                width = Math.round((width * maxHeight) / height);
-                height = maxHeight;
-              }
-            }
-
-            canvas.width = width;
-            canvas.height = height;
+            let w = img.width, h = img.height;
+            const max = 250;
+            if (w > h) { if (w > max) { h *= max / w; w = max; } }
+            else { if (h > max) { w *= max / h; h = max; } }
+            canvas.width = w; canvas.height = h;
             const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, width, height);
-            resolve(canvas.toDataURL('image/jpeg', quality));
+            ctx.drawImage(img, 0, 0, w, h);
+            resolve(canvas.toDataURL('image/jpeg', 0.6));
           };
-          img.onerror = () => resolve("");
           img.src = e.target.result;
         };
-        reader.onerror = () => resolve("");
         reader.readAsDataURL(file);
       });
     }
 
     document.getElementById('teamForm').addEventListener('submit', async function(e) {
       e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.textContent = "Memproses & Mengirim Data...";
 
-      const submitBtn = document.getElementById('submitBtn');
-      submitBtn.textContent = "Mengunggah & Memproses Data...";
-      submitBtn.disabled = true;
-
-      const teamName = document.getElementById('team_name').value || "Tim Tanpa Nama";
-      const teamLogoFile = document.getElementById('team_logo').files[0];
-      const teamLogoUrl = await compressAndReadFile(teamLogoFile, 200, 200, 0.8);
-
-      const playersData = [];
-
-      const captainName = document.getElementById('captain_name').value || "Kapten Tanpa Nama";
-      const captainNumber = document.getElementById('captain_number').value || "-";
-      const captainPhotoFile = document.getElementById('captain_photo').files[0];
-      const captainPhotoUrl = await compressAndReadFile(captainPhotoFile, 300, 300, 0.7);
-
-      playersData.push({
-        name: captainName,
-        number: captainNumber,
-        photo: captainPhotoUrl || "https://via.placeholder.com/150?text=No+Photo",
-        isCaptain: true
-      });
+      const teamName = document.getElementById('teamName').value;
+      const captainName = document.getElementById('captainName').value;
+      const captainNum = document.getElementById('captainNum').value;
+      const captainPhoto = await processImage(document.getElementById('captainPhoto').files[0]);
 
       const names = document.querySelectorAll('.p-name');
-	  const numbers = document.querySelectorAll('.p-number');
+      const nums = document.querySelectorAll('.p-num');
       const photos = document.querySelectorAll('.p-photo');
 
-      for (let i = 0; i < TOTAL_PLAYERS; i++) {
-        const pName = names[i].value || `Pemain ${i + 2}`;
-        const pNum = numbers[i].value || "-";
-        const photoUrl = await compressAndReadFile(photos[i].files[0], 300, 300, 0.7);
-
-        playersData.push({
-          name: pName,
-          number: pNum,
-          photo: photoUrl || "https://via.placeholder.com/150?text=No+Photo",
-          isCaptain: false
+      const players = [];
+      for (let i = 0; i < 14; i++) {
+        const photoUrl = await processImage(photos[i].files[0]);
+        players.push({
+          name: names[i].value || `Pemain ${i + 2}`,
+          number: nums[i].value || "-",
+          photo: photoUrl
         });
       }
 
-      renderPoster(teamName, teamLogoUrl || "https://via.placeholder.com/150?text=Logo", playersData);
+      // Tampilkan Poster Lengkap
+      renderPoster(teamName, captainName, captainNum, captainPhoto, players);
 
-      const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbxMl39AdKI7TudKk_nxO-wuSu7HX1t3KxRUvfXZPUXn3tFnOpCj6vpuMbbhE_RAZD9rbQ/exec"; 
-      
-      fetch(GOOGLE_SHEET_URL, {
-        method: "POST",
-        body: JSON.stringify({ 
-          teamName: teamName, 
-          teamLogo: teamLogoUrl, 
-          players: playersData 
-        }),
-        headers: { "Content-Type": "text/plain;charset=utf-8" }
-      })
-      .then(response => response.json())
-      .then(result => {
-        console.log("Berhasil tersimpan:", result);
-      })
-      .catch(err => {
-        console.error("Gagal kirim ke Google Script:", err);
-      });
+      // Kirim Data Ke Google Sheets & Drive
+      if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== "https://script.google.com/macros/s/AKfycbzhjw27WcO8fiKSrQHwf6rJoQFtfTYfSb0i_ZSOJPPJd_z1o8CxajNWDePG9PXliwiZAA/exec") {
+        fetch(GOOGLE_SCRIPT_URL, {
+          method: "POST",
+          body: JSON.stringify({
+            teamName: teamName,
+            captainName: captainName,
+            captainNumber: captainNum,
+            captainPhoto: captainPhoto,
+            players: players
+          }),
+          headers: { "Content-Type": "text/plain;charset=utf-8" }
+        })
+        .then(res => res.json())
+        .then(res => console.log("Response:", res))
+        .catch(err => console.error("Error:", err));
+      }
     });
 
-    function renderPoster(teamName, teamLogoUrl, players) {
-      document.getElementById('displayTeamName').textContent = teamName;
-      document.getElementById('displayTeamLogo').src = teamLogoUrl;
+    function renderPoster(team, capName, capNum, capPhoto, players) {
+      document.getElementById('displayTeam').textContent = team;
+      const grid = document.getElementById('posterGrid');
+      grid.innerHTML = '';
 
-      const posterGrid = document.getElementById('posterGrid');
-      posterGrid.innerHTML = '';
+      // Tambah Kapten
+      grid.innerHTML += `
+        <div class="card captain">
+          <span class="badge">KAPTEN</span>
+          <img src="${capPhoto || 'https://via.placeholder.com/150'}" alt="Foto">
+          <div class="card-num">#${capNum}</div>
+          <div class="card-name">${capName}</div>
+        </div>
+      `;
 
-      players.forEach(player => {
-        const card = document.createElement('div');
-        card.className = `card ${player.isCaptain ? 'captain' : ''}`;
-        
-        card.innerHTML = `
-          ${player.isCaptain ? '<div class="badge-captain">Kapten</div>' : ''}
-          <img src="${player.photo}" alt="${player.name}">
-          <div class="card-info">
-            <div class="card-number">#${player.number}</div>
-            <div class="card-name">${player.name}</div>
+      // Tambah 14 Pemain
+      players.forEach(p => {
+        grid.innerHTML += `
+          <div class="card">
+            <img src="${p.photo || 'https://via.placeholder.com/150'}" alt="Foto">
+            <div class="card-num">#${p.number}</div>
+            <div class="card-name">${p.name}</div>
           </div>
         `;
-        posterGrid.appendChild(card);
       });
 
       document.getElementById('formSection').style.display = 'none';
       document.getElementById('posterSection').style.display = 'block';
-      window.scrollTo(0, 0);
     }
 
     function downloadPoster() {
-      const captureElement = document.getElementById('captureArea');
-      
-      html2canvas(captureElement, { scale: 2, useCORS: true }).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'poster-squad-tim.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
+      html2canvas(document.getElementById('captureArea'), { scale: 2 }).then(canvas => {
+        const a = document.createElement('a');
+        a.download = 'Poster_Roster.png';
+        a.href = canvas.toDataURL('image/png');
+        a.click();
       });
     }
   </script>
