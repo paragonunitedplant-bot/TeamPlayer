@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pendaftaran Tim & Poster Roster</title>
-  <!-- Library html2canvas untuk Download Poster -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
   <style>
@@ -120,7 +119,6 @@
       cursor: not-allowed;
     }
 
-    /* Styles Tampilan Poster */
     #posterSection {
       display: none;
       margin-top: 20px;
@@ -247,12 +245,9 @@
 <body>
 
   <div class="container">
-    <!-- Form Input Pendaftaran -->
     <div id="formSection">
       <h1>Form Pendaftaran Tim</h1>
       <form id="teamForm">
-        
-        <!-- INFORMASI TIM & LOGO -->
         <div class="section-title team-title">Informasi Tim</div>
         <div class="player-row">
           <div class="form-group">
@@ -265,7 +260,6 @@
           </div>
         </div>
 
-        <!-- KAPTEN TIM -->
         <div class="section-title captain-title">Kapten Tim (Pemain 1)</div>
         <div class="player-row">
           <div class="form-group">
@@ -282,7 +276,6 @@
           </div>
         </div>
 
-        <!-- 14 PEMAIN LAINNYA -->
         <div class="section-title">Anggota Pemain (14 Orang)</div>
         <div id="playersContainer"></div>
 
@@ -290,7 +283,6 @@
       </form>
     </div>
 
-    <!-- Tampilan Poster Tim -->
     <div id="posterSection">
       <div class="poster-container" id="captureArea">
         <div class="poster-header">
@@ -312,7 +304,6 @@
     const TOTAL_PLAYERS = 14; 
     const playersContainer = document.getElementById('playersContainer');
 
-    // 1. Membuat Input Form untuk 14 Pemain secara otomatis saat halaman dimuat
     for (let i = 1; i <= TOTAL_PLAYERS; i++) {
       const row = document.createElement('div');
       row.className = 'player-row';
@@ -333,14 +324,12 @@
       playersContainer.appendChild(row);
     }
 
-    // 2. Fungsi Kompresi Foto & Konversi ke Base64
     function compressAndReadFile(file, maxWidth = 300, maxHeight = 300, quality = 0.7) {
       return new Promise((resolve) => {
         if (!file) {
           resolve(""); 
           return;
         }
-
         const reader = new FileReader();
         reader.onload = (e) => {
           const img = new Image();
@@ -363,12 +352,9 @@
 
             canvas.width = width;
             canvas.height = height;
-
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, width, height);
-
-            const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
-            resolve(compressedBase64);
+            resolve(canvas.toDataURL('image/jpeg', quality));
           };
           img.onerror = () => resolve("");
           img.src = e.target.result;
@@ -378,7 +364,6 @@
       });
     }
 
-    // 3. Menangani Submit Form
     document.getElementById('teamForm').addEventListener('submit', async function(e) {
       e.preventDefault();
 
@@ -387,7 +372,6 @@
       submitBtn.disabled = true;
 
       const teamName = document.getElementById('team_name').value || "Tim Tanpa Nama";
-      
       const teamLogoFile = document.getElementById('team_logo').files[0];
       const teamLogoUrl = await compressAndReadFile(teamLogoFile, 200, 200, 0.8);
 
@@ -406,7 +390,7 @@
       });
 
       const names = document.querySelectorAll('.p-name');
-      const numbers = document.querySelectorAll('.p-number');
+	  const numbers = document.querySelectorAll('.p-number');
       const photos = document.querySelectorAll('.p-photo');
 
       for (let i = 0; i < TOTAL_PLAYERS; i++) {
@@ -422,10 +406,8 @@
         });
       }
 
-      // Render Poster di Layar
       renderPoster(teamName, teamLogoUrl || "https://via.placeholder.com/150?text=Logo", playersData);
 
-      // --- KIRIM KE GOOGLE SHEETS / DRIVE ---
       const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbwym3lrs_pUpeeiFUMo2XAy49wpUdit3oEQTiP_kfki7fvABpEOJ9yMiHF2XZi1JLCzLg/exec"; 
       
       fetch(GOOGLE_SHEET_URL, {
@@ -446,7 +428,6 @@
       });
     });
 
-    // 4. Fungsi Render Poster Tim
     function renderPoster(teamName, teamLogoUrl, players) {
       document.getElementById('displayTeamName').textContent = teamName;
       document.getElementById('displayTeamLogo').src = teamLogoUrl;
@@ -467,3 +448,23 @@
           </div>
         `;
         posterGrid.appendChild(card);
+      });
+
+      document.getElementById('formSection').style.display = 'none';
+      document.getElementById('posterSection').style.display = 'block';
+      window.scrollTo(0, 0);
+    }
+
+    function downloadPoster() {
+      const captureElement = document.getElementById('captureArea');
+      
+      html2canvas(captureElement, { scale: 2, useCORS: true }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'poster-squad-tim.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      });
+    }
+  </script>
+</body>
+</html>
