@@ -665,13 +665,25 @@
       });
     }
 
-    // Function Reset Form
+    // Function Reset Form (Diperbarui agar ikut mereset pratinjau gambar)
     function resetForm() {
       document.getElementById('posterResultArea').classList.add('hidden');
       document.getElementById('rulesArea').classList.remove('hidden');
       document.getElementById('registrationForm').reset();
+      
+      // Reset Preview Logo Tim
+      document.getElementById('teamLogoPreview').classList.add('hidden');
+      document.getElementById('teamLogoPreview').src = "";
+      document.getElementById('teamLogoPlaceholder').classList.remove('hidden');
+
+      // Reset Preview Foto Kapten
+      document.getElementById('captainPhotoPreview').classList.add('hidden');
+      document.getElementById('captainPhotoPreview').src = "";
+      document.getElementById('captainPhotoPlaceholder').classList.remove('hidden');
+
       document.getElementById('agreeRules').checked = false;
       toggleFormButton();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   </script>
 </body>
