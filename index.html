@@ -109,6 +109,40 @@
         PT Paragon Technology and Innovation
       </p>
     </div>
+    <!-- LETAKKAN KOTAK CEK TIM DI SINI              -->
+    <!-- ========================================== -->
+    <div class="glass-card rounded-2xl p-6 md:p-8 shadow-2xl space-y-4 mb-6">
+      <h3 class="text-lg font-bold text-white flex items-center gap-2">
+        <i data-lucide="search" class="w-5 h-5 text-indigo-400"></i> Cek Tim & Poster Terdaftar
+      </h3>
+      <p class="text-xs text-slate-400">Masukkan kode pendaftaran unik Anda (contoh: PTI-XXXX) untuk melihat detail tim dan poster yang tersimpan.</p>
+      
+      <div class="flex gap-2">
+        <input type="text" id="searchCodeInput" placeholder="Masukkan Kode (Misal: PTI-1234)" class="custom-input w-full px-4 py-3 rounded-xl text-sm uppercase">
+        <button onclick="handleCheckTeam()" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl transition-all flex items-center gap-2 shrink-0 cursor-pointer">
+          Cek Tim
+        </button>
+      </div>
+
+      <!-- Area Hasil Pencarian Tim -->
+      <div id="searchResultArea" class="hidden mt-4 pt-4 border-t border-slate-800 space-y-4 text-left">
+        <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
+          <h4 id="resTeamName" class="text-base font-bold text-indigo-400">-</h4>
+          <p id="resDeptName" class="text-xs text-slate-300">-</p>
+        </div>
+        
+        <!-- Bagian untuk menampilkan Poster yang tersimpan di Drive -->
+        <div class="space-y-2">
+          <label class="block text-xs font-bold text-slate-300 uppercase">Poster Roster Tim:</label>
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-2 text-center">
+            <img id="resPosterImg" src="" alt="Poster Roster" class="mx-auto rounded-lg max-h-96 object-contain hidden">
+            <p id="resNoPoster" class="text-xs text-slate-500 py-4">Memuat poster...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ========================================== -->
+    
 
     <!-- ================= HALAMAN 0: PERATURAN PENDAFTARAN ================= -->
     <div id="rulesArea" class="glass-card rounded-2xl p-6 md:p-8 shadow-2xl space-y-6">
@@ -734,6 +768,60 @@
     
         } catch (err) {
         alert("Gagal memuat data tim.");
+      }
+    }
+
+      // FUNGSI CEK TIM & POSTER BERDASARKAN KODE
+    // ==========================================
+    async function handleCheckTeam() {
+      const codeInput = document.getElementById('searchCodeInput').value.trim();
+      if (!codeInput) {
+        alert("Harap masukkan kode pendaftaran terlebih dahulu!");
+        return;
+      }
+
+      const resultArea = document.getElementById('searchResultArea');
+      const resTeamName = document.getElementById('resTeamName');
+      const resDeptName = document.getElementById('resDeptName');
+      const resPosterImg = document.getElementById('resPosterImg');
+      const resNoPoster = document.getElementById('resNoPoster');
+
+      // Reset tampilan awal
+      resultArea.classList.remove('hidden');
+      resTeamName.innerText = "Mencari data tim...";
+      resDeptName.innerText = "";
+      resPosterImg.classList.add('hidden');
+      resNoPoster.innerText = "Sedang mengambil data dari server...";
+
+      try {
+        const response = await fetch(`${GOOGLE_SCRIPT_URL}?code=${codeInput}`);
+        const result = await response.json();
+
+        if (result.status === "not_found") {
+          resTeamName.innerText = "Tim Tidak Ditemukan";
+          resDeptName.innerText = "Pastikan kode pendaftaran yang Anda masukkan sudah benar.";
+          resNoPoster.innerText = "Tidak ada poster ditemukan.";
+          return;
+        }
+
+        if (result.status === "success") {
+          resTeamName.innerText = `Tim: ${result.team.teamName} (Kode: ${result.team.code})`;
+          resDeptName.innerText = `Departemen: ${result.team.department}`;
+
+          if (result.posterUrl && result.posterUrl.startsWith("http")) {
+            resPosterImg.src = result.posterUrl;
+            resPosterImg.classList.remove('hidden');
+            resNoPoster.innerText = "";
+          } else {
+            resNoPoster.innerText = "Poster tidak tersedia atau gagal dimuat.";
+          }
+        }
+
+      } catch (err) {
+        console.error(err);
+        resTeamName.innerText = "Terjadi Kesalahan";
+        resDeptName.innerText = "Gagal terhubung ke server database.";
+        resNoPoster.innerText = "";
       }
     }
   </script>
