@@ -344,13 +344,20 @@
     </div>
 
     <!-- ================= HASIL POSTER ROSTER TIM ================= -->
+    <!-- ================= HASIL POSTER ROSTER TIM ================= -->
     <div id="posterResultArea" class="hidden text-center space-y-6">
-      
-      <div class="bg-emerald-500/10 border border-emerald-500/30 p-4 rounded-2xl inline-flex items-center gap-3 text-emerald-400 font-bold text-sm">
-        <i data-lucide="check-circle" class="w-5 h-5"></i> Registrasi Berhasil! Poster Tim Resmi Telah Dibuat.
+  
+      <div class="bg-emerald-500/10 border border-emerald-500/30 p-4 rounded-2xl inline-flex flex-col items-center gap-2 text-emerald-400 font-bold text-sm">
+        <div class="flex items-center gap-2">
+          <i data-lucide="check-circle" class="w-5 h-5"></i> Registrasi Berhasil! Poster Roster Resmi Telah Dibuat.
+        </div>
+        <!-- KODE PENDAFTARAN MUNCUL DI SINI -->
+        <div class="text-xs text-slate-300 bg-slate-900/80 px-4 py-2 rounded-xl border border-emerald-500/30 mt-1">
+          Kode Pendaftaran Anda: <span id="displayRegCode" class="text-amber-400 font-mono font-extrabold text-base tracking-wider">---</span>
+        </div>
       </div>
-
-      <!-- KANVAS POSTER -->
+  
+       <!-- KANVAS POSTER -->
       <div class="overflow-x-auto pb-4">
         <div id="teamPoster" class="mx-auto rounded-3xl p-7 text-white text-left relative overflow-hidden">
           
@@ -652,13 +659,20 @@
           players: players
         };
 
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyMbpV07imywyF8YHLlKdh-4NQWMTy_RToVjD-8XtbNvw07sL7yisBBuvtn0x6geVZ4hw/exec";
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbynV-nZBdd5q4xUJSUN2rt7k_JQZRQJUAWZfn9TwMz5LfjXGfhMBUomHIypOi-Qas7SOQ/exec";
 
-        fetch(GOOGLE_SCRIPT_URL, {
+        // Ubah fetch menjadi menggunakan await agar bisa membaca hasil balasan (response)
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
           method: 'POST',
           body: JSON.stringify(payload)
-        }).catch(err => console.log("Request sent to GS:", err));
-
+        });
+        
+        const result = await response.json();
+        
+        if (result.status === "success") {
+          // Tampilkan kode pendaftaran unik ke layar
+          document.getElementById('displayRegCode').innerText = result.registrationCode;
+        }
         document.getElementById('formArea').classList.add('hidden');
         document.getElementById('posterResultArea').classList.remove('hidden');
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -702,6 +716,25 @@
       document.getElementById('agreeRules').checked = false;
       toggleFormButton();
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+      // Fungsi untuk mengecek data tim lewat kode pendaftaran
+      async function checkTeamByCode(registrationCode) {
+        try {
+          // Langsung menggunakan variabel GOOGLE_SCRIPT_URL yang sudah ada di atas
+          const response = await fetch(`${GOOGLE_SCRIPT_URL}?code=${registrationCode}`);
+          const result = await response.json();
+    
+          if (result.status === "not_found") {
+            alert("Kode pendaftaran tidak ditemukan! Periksa kembali kode Anda.");
+            return;
+           }
+      
+          console.log("Tim Ditemukan:", result);
+          alert(`Tim Ditemukan: ${result.team.teamName} (${result.team.department})`);
+    
+        } catch (err) {
+        alert("Gagal memuat data tim.");
+      }
     }
   </script>
 </body>
