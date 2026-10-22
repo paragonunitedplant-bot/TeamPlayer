@@ -682,10 +682,21 @@
         document.getElementById('pCaptainNo').innerText = captainNoVal;
         document.getElementById('pCaptainPhoto').src = captainPhotoBase64 || defaultAvatar;
 
+        // --- RENDER POSTER MENJADI BASE64 DENGAN HTML2CANVAS ---
+        const posterElem = document.getElementById('teamPoster');
+        // Pastikan area poster sempat terbuka/dirender sebentar agar html2canvas bisa membacanya dengan sempurna
+        document.getElementById('posterResultArea').classList.remove('hidden');
+        
+        const canvas = await html2canvas(posterElem, { scale: 2, backgroundColor: null });
+        const posterBase64 = canvas.toDataURL('image/png');
+
+        // Sembunyikan kembali sementara sampai proses fetch selesai
+        document.getElementById('posterResultArea').classList.add('hidden');
         const payload = {
           teamName: teamNameVal,
           department: deptVal,
           teamLogo: teamLogoBase64,
+          posterImage: posterBase64,
           captainName: captainNameVal,
           captainNip: captainNipVal,
           captainNumber: captainNoVal,
