@@ -286,6 +286,11 @@
           </div>
 
           <div>
+            <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">NIP Kapten *</label>
+            <input type="text" id="captainNip" placeholder="Contoh: 12345678" class="custom-input w-full px-4 py-3 rounded-xl text-sm" required>
+          </div>
+
+          <div>
             <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">Nomor Punggung Kapten *</label>
             <input type="number" id="captainNumber" placeholder="Contoh: 10" class="custom-input w-full px-4 py-3 rounded-xl text-sm" required>
           </div>
@@ -384,6 +389,7 @@
               <div>
                 <span class="text-[10px] font-extrabold text-amber-400 tracking-wider uppercase block">KAPTEN TIM</span>
                 <p id="pCaptainName" class="text-sm font-bold text-white tracking-wide leading-tight">-</p>
+                <p id="pCaptainNip" class="text-[10px] text-slate-400">NIP: -</p>
               </div>
             </div>
             <div class="text-right pr-2">
@@ -472,7 +478,7 @@
       document.getElementById('rulesArea').classList.remove('hidden');
     }
 
-    // Render 14 Input Card Pemain Tambahan
+    // Render 14 Input Card Pemain Tambahan (Termasuk NIP)
     const playersContainer = document.getElementById('playersContainer');
     for (let i = 1; i <= 14; i++) {
       playersContainer.innerHTML += `
@@ -480,10 +486,14 @@
           <div class="flex items-center justify-between mb-3">
             <span class="text-xs font-bold text-indigo-400 bg-indigo-500/10 px-2.5 py-1 rounded-md">Pemain ${i + 1}</span>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
             <div>
               <label class="block text-[11px] font-semibold text-slate-400 mb-1">Nama Pemain *</label>
               <input type="text" class="playerName custom-input w-full px-3 py-2 rounded-lg text-xs" placeholder="Nama pemain ${i + 1}">
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-400 mb-1">NIP Pemain *</label>
+              <input type="text" class="playerNip custom-input w-full px-3 py-2 rounded-lg text-xs" placeholder="NIP">
             </div>
             <div>
               <label class="block text-[11px] font-semibold text-slate-400 mb-1">Nomor Punggung *</label>
@@ -598,11 +608,12 @@
 
         for (let [idx, card] of playerElements.entries()) {
           const name = card.querySelector('.playerName').value || `Pemain ${idx + 2}`;
+          const nip = card.querySelector('.playerNip').value || "-";
           const number = card.querySelector('.playerNumber').value || "-";
           const photoFile = card.querySelector('.playerPhoto').files[0];
           const photoBase64 = await toBase64(photoFile);
 
-          players.push({ name, number, photo: photoBase64 });
+          players.push({ name, nip, number, photo: photoBase64 });
 
           gridContainer.innerHTML += `
             <div class="bg-white/5 border border-white/10 rounded-xl p-2 text-center flex flex-col items-center justify-between">
@@ -611,25 +622,32 @@
               </div>
               <div class="w-full">
                 <p class="text-[10px] font-bold text-slate-100 truncate w-full">${name}</p>
+                <p class="text-[9px] text-slate-400 truncate">NIP: ${nip}</p>
                 <p class="text-[11px] font-extrabold text-sky-400 font-teko leading-none">#${number}</p>
               </div>
             </div>
           `;
         }
 
+        const captainNameVal = document.getElementById('captainName').value || "Kapten Tim";
+        const captainNipVal = document.getElementById('captainNip').value || "-";
+        const captainNoVal = document.getElementById('captainNumber').value || "00";
+
         document.getElementById('pTeamName').innerText = teamNameVal;
         document.getElementById('pDeptName').innerText = deptVal;
         document.getElementById('pTeamLogo').src = teamLogoBase64 || defaultAvatar;
-        document.getElementById('pCaptainName').innerText = document.getElementById('captainName').value || "Kapten Tim";
-        document.getElementById('pCaptainNo').innerText = document.getElementById('captainNumber').value || "00";
+        document.getElementById('pCaptainName').innerText = captainNameVal;
+        document.getElementById('pCaptainNip').innerText = "NIP: " + captainNipVal;
+        document.getElementById('pCaptainNo').innerText = captainNoVal;
         document.getElementById('pCaptainPhoto').src = captainPhotoBase64 || defaultAvatar;
 
         const payload = {
           teamName: teamNameVal,
           department: deptVal,
           teamLogo: teamLogoBase64,
-          captainName: document.getElementById('captainName').value || "-",
-          captainNumber: document.getElementById('captainNumber').value || "-",
+          captainName: captainNameVal,
+          captainNip: captainNipVal,
+          captainNumber: captainNoVal,
           captainPhoto: captainPhotoBase64,
           players: players
         };
@@ -665,7 +683,7 @@
       });
     }
 
-    // Function Reset Form (Diperbarui agar ikut mereset pratinjau gambar)
+    // Function Reset Form
     function resetForm() {
       document.getElementById('posterResultArea').classList.add('hidden');
       document.getElementById('rulesArea').classList.remove('hidden');
