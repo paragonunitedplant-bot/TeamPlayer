@@ -120,9 +120,11 @@
           </h2>
           <p class="text-xs text-slate-400 mt-1">Harap baca dengan seksama sebelum melakukan pendaftaran tim.</p>
         </div>
-        <span class="bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1.5 shrink-0">
-          <i data-lucide="clock" class="w-3.5 h-3.5"></i> Batas: 07/11/26 23:59
-        </span>
+        <!-- COUNTDOWN TIMER BADGE -->
+        <div class="bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold px-3.5 py-1.5 rounded-full flex items-center gap-2 shrink-0 shadow-sm">
+          <i data-lucide="clock" class="w-4 h-4 animate-pulse"></i>
+          <span>Batas: <span id="countdownTimer" class="font-mono tracking-wide">Menghitung...</span></span>
+        </div>
       </div>
 
       <!-- DAFTAR PERATURAN -->
@@ -190,7 +192,7 @@
         </label>
 
         <!-- TOMBOL LANJUT (DEFAULT MATI SAMPAI DICENTANG) -->
-        <button type="button" id="startFormBtn" onclick="startRegistration()" class="w-full py-4 bg-slate-800 text-slate-500 font-bold rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-not-allowed" style="pointer-events: none;">
+        <button type="button" id="startFormBtn" disabled onclick="startRegistration()" class="w-full py-4 bg-slate-800 text-slate-500 font-bold rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-not-allowed" style="pointer-events: none;">
           Lanjut ke Form Pendaftaran <i data-lucide="arrow-right" class="w-5 h-5"></i>
         </button>
       </div>
@@ -418,6 +420,27 @@
 
   <script>
     lucide.createIcons();
+
+    // LIVE COUNTDOWN TIMER KE 07/11/2026 23:59:59
+    const countDownDate = new Date("November 7, 2026 23:59:59").getTime();
+
+    const x = setInterval(function() {
+      const now = new Date().getTime();
+      const distance = countDownDate - now;
+
+      if (distance < 0) {
+        clearInterval(x);
+        document.getElementById("countdownTimer").innerHTML = "Pendaftaran Ditutup";
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById("countdownTimer").innerHTML = `${days}h ${hours}j ${minutes}m ${seconds}d`;
+    }, 1000);
 
     const defaultAvatar = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='%23475569'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>";
 
