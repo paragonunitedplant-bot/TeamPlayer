@@ -134,9 +134,14 @@
         <!-- Bagian untuk menampilkan Poster yang tersimpan di Drive -->
         <div class="space-y-2">
           <label class="block text-xs font-bold text-slate-300 uppercase">Poster Roster Tim:</label>
-          <div class="bg-slate-900 border border-slate-800 rounded-xl p-2 text-center">
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 text-center space-y-3">
             <img id="resPosterImg" src="" alt="Poster Roster" class="mx-auto rounded-lg max-h-96 object-contain hidden">
             <p id="resNoPoster" class="text-xs text-slate-500 py-4">Memuat poster...</p>
+            
+            <!-- --- TAMBAHKAN TOMBOL DOWNLOAD DI SINI --- -->
+            <button id="downloadPosterBtn" onclick="downloadPosterImage()" class="hidden w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 text-xs cursor-pointer shadow-lg">
+              <i data-lucide="download" class="w-4 h-4"></i> Download Poster Roster
+            </button>
           </div>
         </div>
       </div>
@@ -833,20 +838,61 @@
                // Format direct link gambar publik Google Drive
               resPosterImg.src = `https://lh3.googleusercontent.com/d/${fileId}`;
               resPosterImg.classList.remove('hidden');
+
+              // --- MUNCULKAN TOMBOL DOWNLOAD ---
+              document.getElementById('downloadPosterBtn').classList.remove('hidden');
+              
               resNoPoster.innerText = "";
             } else {
               resNoPoster.innerText = "Format tautan poster tidak valid.";
+              document.getElementById('downloadPosterBtn').classList.add('hidden');
             }
-             } else {
-                resNoPoster.innerText = "Poster tidak tersedia.";
-              }
-            }
+          } else {
+            resNoPoster.innerText = "Poster tidak tersedia atau gagal dimuat.";
+            document.getElementById('downloadPosterBtn').classList.add('hidden');
+          }
+        }
 
       } catch (err) {
         console.error(err);
         resTeamName.innerText = "Terjadi Kesalahan";
         resDeptName.innerText = "Gagal terhubung ke server database.";
         resNoPoster.innerText = "";
+      }
+    }
+
+    // Fungsi untuk mendownload poster roster langsung dari Google Drive
+    function downloadPosterImage() {
+      const imgElement = document.getElementById('resPosterImg');
+      const imageUrl = imgElement.src;
+      
+      if (!imageUrl) {
+        alert("Tidak ada poster yang dapat diunduh.");
+        return;
+      }
+
+      try {
+        // Ekstraksi File ID dari URL poster
+        let fileId = "";
+        if (imageUrl.includes("/d/")) {
+          fileId = imageUrl.split("/d/")[1].split("/")[0].split("?")[0];
+        }
+
+        if (fileId) {
+          // Buat elemen <a> sementara dengan URL pemicu download otomatis Google Drive
+          const downloadUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+          const a = document.createElement('a');
+          a.href = downloadUrl;
+          a.target = '_blank';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        } else {
+          window.open(imageUrl, '_blank');
+        }
+      } catch (err) {
+        console.error("Gagal mendownload:", err);
+        window.open(imageUrl, '_blank');
       }
     }
   </script>
