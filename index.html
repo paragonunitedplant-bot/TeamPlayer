@@ -3,16 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pendaftaran Tim Turnamen Mini Soccer</title>
+  <title>Peraturan Pendaftaran - Turnamen Mini Soccer</title>
   
-  <!-- Pustaka html2canvas & Tailwind CSS CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
   
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Teko:wght@600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
@@ -21,11 +18,6 @@
       min-height: 100vh;
     }
 
-    .font-teko {
-      font-family: 'Teko', sans-serif;
-    }
-
-    /* Background Glow Effect */
     .glow-bg {
       position: fixed;
       top: 0;
@@ -39,54 +31,10 @@
       z-index: 0;
     }
 
-    /* Glassmorphism Card */
     .glass-card {
       background: rgba(17, 24, 39, 0.85);
       backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    /* Input Custom Style */
-    .custom-input {
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: #f8fafc;
-      transition: all 0.25s ease;
-    }
-    .custom-input:focus {
-      border-color: #6366f1;
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
-      outline: none;
-    }
-
-    /* Upload Box Drag & Drop */
-    .upload-box {
-      border: 2px dashed rgba(255, 255, 255, 0.18);
-      transition: all 0.2s ease;
-    }
-    .upload-box:hover {
-      border-color: #6366f1;
-      background: rgba(99, 102, 241, 0.05);
-    }
-
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #0f172a;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #334155;
-      border-radius: 4px;
-    }
-
-    /* Poster Card Design */
-    #teamPoster {
-      width: 700px;
-      background: linear-gradient(135deg, #0b0f19 0%, #111827 50%, #1e1b4b 100%);
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 40px rgba(79, 70, 229, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.12);
     }
   </style>
 </head>
@@ -94,62 +42,8 @@
 
   <div class="glow-bg"></div>
 
-  <!-- CONTAINER UTAMA -->
   <div class="w-full max-w-3xl relative z-10 my-4">
     
-    <!-- HEADER GENERAL -->
-    <div class="text-center mb-6">
-      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs font-semibold tracking-wide uppercase mb-3">
-        <i data-lucide="trophy" class="w-4 h-4"></i> Turnamen Minisoccer PTI Plant
-      </div>
-      <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-2">
-        Pendaftaran Tim & Pemain
-      </h1>
-      <p class="text-slate-400 text-sm max-w-md mx-auto">
-        PT Paragon Technology and Innovation
-      </p>
-    </div>
-    <!-- LETAKKAN KOTAK CEK TIM DI SINI              -->
-    <!-- ========================================== -->
-    <div class="glass-card rounded-2xl p-6 md:p-8 shadow-2xl space-y-4 mb-6">
-      <h3 class="text-lg font-bold text-white flex items-center gap-2">
-        <i data-lucide="search" class="w-5 h-5 text-indigo-400"></i> Cek Tim & Poster Terdaftar
-      </h3>
-      <p class="text-xs text-slate-400">Masukkan kode pendaftaran unik Anda (contoh: PTI-XXXX) untuk melihat detail tim dan poster yang tersimpan.</p>
-      
-      <div class="flex gap-2">
-        <input type="text" id="searchCodeInput" placeholder="Masukkan Kode (Misal: PTI-1234)" class="custom-input w-full px-4 py-3 rounded-xl text-sm uppercase">
-        <button onclick="handleCheckTeam()" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl transition-all flex items-center gap-2 shrink-0 cursor-pointer">
-          Cek Tim
-        </button>
-      </div>
-
-      <!-- Area Hasil Pencarian Tim -->
-      <div id="searchResultArea" class="hidden mt-4 pt-4 border-t border-slate-800 space-y-4 text-left">
-        <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
-          <h4 id="resTeamName" class="text-base font-bold text-indigo-400">-</h4>
-          <p id="resDeptName" class="text-xs text-slate-300">-</p>
-        </div>
-        
-        <!-- Bagian untuk menampilkan Poster yang tersimpan di Drive -->
-        <div class="space-y-2">
-          <label class="block text-xs font-bold text-slate-300 uppercase">Poster Roster Tim:</label>
-          <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 text-center space-y-3">
-            <img id="resPosterImg" src="" alt="Poster Roster" class="mx-auto rounded-lg max-h-96 object-contain hidden">
-            <p id="resNoPoster" class="text-xs text-slate-500 py-4">Memuat poster...</p>
-            
-            <!-- --- TAMBAHKAN TOMBOL DOWNLOAD DI SINI --- -->
-            <button id="downloadPosterBtn" onclick="downloadPosterImage()" class="hidden w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 text-xs cursor-pointer shadow-lg">
-              <i data-lucide="download" class="w-4 h-4"></i> Download Poster Roster
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- ========================================== -->
-    
-
-    <!-- ================= HALAMAN 0: PERATURAN PENDAFTARAN ================= -->
     <div id="rulesArea" class="glass-card rounded-2xl p-6 md:p-8 shadow-2xl space-y-6">
       
       <div class="border-b border-slate-800 pb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
@@ -159,7 +53,7 @@
           </h2>
           <p class="text-xs text-slate-400 mt-1">Harap baca dengan seksama sebelum melakukan pendaftaran tim.</p>
         </div>
-        <!-- COUNTDOWN TIMER BADGE -->
+
         <div class="bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold px-3.5 py-1.5 rounded-full flex items-center gap-2 shrink-0 shadow-sm">
           <i data-lucide="clock" class="w-4 h-4 animate-pulse"></i>
           <span>Batas: <span id="countdownTimer" class="font-mono tracking-wide">Menghitung...</span></span>
@@ -167,8 +61,7 @@
       </div>
 
       <!-- DAFTAR PERATURAN -->
-      <div class="space-y-3.5 max-h-[380px] overflow-y-auto pr-2">
-        
+      <div class="space-y-3.5 max-h-[400px] overflow-y-auto pr-2">
         <div class="flex items-start gap-3 bg-slate-900/60 p-3.5 rounded-xl border border-slate-800">
           <span class="w-6 h-6 rounded-lg bg-indigo-500/20 text-indigo-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
           <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-white">Kuota & Jumlah Pemain:</strong> Maksimal 24 tim. Wajib mendaftarkan tepat 15 pemain tiap tim (1 Kapten + 14 Pemain). Jika kurang dari 15 pemain, dianggap <span class="text-rose-400 font-semibold">tidak memenuhi kriteria</span>.</p>
@@ -218,7 +111,6 @@
           <span class="w-6 h-6 rounded-lg bg-indigo-500/20 text-indigo-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">10</span>
           <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-white">Eksklusivitas Pemain:</strong> 1 (satu) pemain hanya berhak terdaftar di dalam 1 (satu) tim turnamen.</p>
         </div>
-
       </div>
 
       <!-- CHECKBOX PERSETUJUAN PERATURAN -->
@@ -231,239 +123,9 @@
         </label>
 
         <!-- TOMBOL LANJUT -->
-        <button type="button" id="startFormBtn" disabled onclick="startRegistration()" class="w-full py-4 bg-slate-800 text-slate-500 font-bold rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-not-allowed opacity-60">
+        <a id="startFormBtn" href="pendaftaran.html" class="pointer-events-none opacity-60 w-full py-4 bg-slate-800 text-slate-500 font-bold rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
           Lanjut ke Form Pendaftaran <i data-lucide="arrow-right" class="w-5 h-5"></i>
-        </button>
-      </div>
-
-    </div>
-
-    <!-- ================= FORM PENDAFTARAN ================= -->
-    <div id="formArea" class="glass-card rounded-2xl p-6 md:p-8 shadow-2xl hidden">
-      
-      <!-- STEP INDICATOR -->
-      <div class="flex items-center justify-between mb-8 pb-6 border-b border-slate-800">
-        <div id="step1-indicator" class="flex items-center gap-3 text-indigo-400 font-semibold text-sm">
-          <span class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-sm">1</span>
-          <span class="hidden sm:inline">Info Tim</span>
-        </div>
-        <div class="w-12 h-[2px] bg-slate-800"></div>
-        <div id="step2-indicator" class="flex items-center gap-3 text-slate-500 font-medium text-sm">
-          <span class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center font-bold text-sm">2</span>
-          <span class="hidden sm:inline">Kapten</span>
-        </div>
-        <div class="w-12 h-[2px] bg-slate-800"></div>
-        <div id="step3-indicator" class="flex items-center gap-3 text-slate-500 font-medium text-sm">
-          <span class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center font-bold text-sm">3</span>
-          <span class="hidden sm:inline">Pemain (14)</span>
-        </div>
-      </div>
-
-      <form id="registrationForm" onsubmit="event.preventDefault();">
-        
-        <!-- STEP 1: INFO TIM -->
-        <div id="step1" class="space-y-5">
-          <h3 class="text-lg font-bold text-white flex items-center gap-2 mb-4">
-            <i data-lucide="shield" class="w-5 h-5 text-indigo-400"></i> Informasi Tim
-          </h3>
-
-          <div>
-            <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">Nama Tim *</label>
-            <input type="text" id="teamName" placeholder="Contoh: GARUDA FC" class="custom-input w-full px-4 py-3 rounded-xl text-sm" required>
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">Departemen *</label>
-            <select id="department" class="custom-input w-full px-4 py-3 rounded-xl text-sm" required>
-              <option value="" disabled selected>-- Pilih Departemen --</option>
-              <option value="Downstream Liquid">Downstream Liquid</option>
-              <option value="Downstream Powder">Downstream Powder</option>
-              <option value="Downstream Semsol">Downstream Semsol</option>
-              <option value="FM">FM</option>
-              <option value="Logistik 1">Logistik 1</option>
-              <option value="Logistik 2">Logistik 2</option>
-              <option value="NDC">NDC</option>
-              <option value="RND">RND</option>
-              <option value="Upstream Liquid">Upstream Liquid</option>
-              <option value="Upstream Powder">Upstream Powder</option>
-              <option value="Upstream Semsol">Upstream Semsol</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">Logo Tim</label>
-            <div class="upload-box rounded-xl p-4 text-center cursor-pointer relative" onclick="document.getElementById('teamLogo').click()">
-              <input type="file" id="teamLogo" accept="image/*" class="hidden" onchange="handleFilePreview(this, 'teamLogoPreview', 'teamLogoPlaceholder')">
-              <div id="teamLogoPlaceholder" class="space-y-1">
-                <i data-lucide="image-plus" class="w-8 h-8 text-indigo-400 mx-auto"></i>
-                <p class="text-xs text-slate-300 font-medium">Klik atau drop logo di sini</p>
-                <p class="text-[10px] text-slate-500">Format PNG/JPG/WEBP</p>
-              </div>
-              <img id="teamLogoPreview" class="hidden h-24 mx-auto object-contain rounded-lg border border-slate-700 p-1">
-            </div>
-          </div>
-
-          <div class="flex gap-3 pt-4">
-            <button type="button" onclick="showRules()" class="w-1/3 py-3.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl transition-all cursor-pointer">
-              Peraturan
-            </button>
-            <button type="button" onclick="goToStep(2)" class="w-2/3 py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-lg shadow-indigo-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer">
-              Lanjut ke Data Kapten <i data-lucide="arrow-right" class="w-4 h-4"></i>
-            </button>
-          </div>
-        </div>
-
-        <!-- STEP 2: DATA KAPTEN -->
-        <div id="step2" class="space-y-5 hidden">
-          <h3 class="text-lg font-bold text-white flex items-center gap-2 mb-4">
-            <i data-lucide="user-check" class="w-5 h-5 text-amber-400"></i> Data Kapten Tim
-          </h3>
-
-          <div>
-            <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">Nama Kapten *</label>
-            <input type="text" id="captainName" placeholder="Masukkan nama lengkap kapten" class="custom-input w-full px-4 py-3 rounded-xl text-sm" required>
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">NIP Kapten *</label>
-            <input type="text" id="captainNip" placeholder="Contoh: 12345678" class="custom-input w-full px-4 py-3 rounded-xl text-sm" required>
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">Nomor Punggung Kapten *</label>
-            <input type="number" id="captainNumber" placeholder="Contoh: 10" class="custom-input w-full px-4 py-3 rounded-xl text-sm" required>
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">Foto Kapten</label>
-            <div class="upload-box rounded-xl p-4 text-center cursor-pointer relative" onclick="document.getElementById('captainPhoto').click()">
-              <input type="file" id="captainPhoto" accept="image/*" class="hidden" onchange="handleFilePreview(this, 'captainPhotoPreview', 'captainPhotoPlaceholder')">
-              <div id="captainPhotoPlaceholder" class="space-y-1">
-                <i data-lucide="user-plus" class="w-8 h-8 text-amber-400 mx-auto"></i>
-                <p class="text-xs text-slate-300 font-medium">Upload foto kapten</p>
-                <p class="text-[10px] text-slate-500">foto pemain</p>
-              </div>
-              <img id="captainPhotoPreview" class="hidden h-28 w-28 mx-auto object-cover rounded-full border-2 border-amber-500 p-0.5">
-            </div>
-          </div>
-
-          <div class="flex gap-3 pt-4">
-            <button type="button" onclick="goToStep(1)" class="w-1/3 py-3.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl transition-all cursor-pointer">
-              Kembali
-            </button>
-            <button type="button" onclick="goToStep(3)" class="w-2/3 py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-lg shadow-indigo-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer">
-              Lanjut ke Data Pemain <i data-lucide="arrow-right" class="w-4 h-4"></i>
-            </button>
-          </div>
-        </div>
-
-        <!-- STEP 3: DATA PEMAIN TAMBAHAN -->
-        <div id="step3" class="space-y-6 hidden">
-          <div class="flex items-center justify-between">
-            <h3 class="text-lg font-bold text-white flex items-center gap-2">
-              <i data-lucide="users" class="w-5 h-5 text-indigo-400"></i> Data 14 Pemain Tambahan
-            </h3>
-            <span class="text-xs text-amber-400 bg-amber-500/10 border border-amber-500/30 px-3 py-1 rounded-full">Wajib 14 Pemain</span>
-          </div>
-
-          <!-- Container Dynamic Player Cards -->
-          <div id="playersContainer" class="space-y-4 max-h-[480px] overflow-y-auto pr-2"></div>
-
-          <div class="flex gap-3 pt-4 border-t border-slate-800">
-            <button type="button" onclick="goToStep(2)" class="w-1/3 py-3.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl transition-all cursor-pointer">
-              Kembali
-            </button>
-            <button type="button" id="submitBtn" onclick="submitForm()" class="w-2/3 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-lg shadow-emerald-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer">
-              <i data-lucide="send" class="w-4 h-4"></i> Kirim & Buat Poster
-            </button>
-          </div>
-        </div>
-
-      </form>
-    </div>
-
-    <!-- ================= HASIL POSTER ROSTER TIM ================= -->
-    <!-- ================= HASIL POSTER ROSTER TIM ================= -->
-    <div id="posterResultArea" class="hidden text-center space-y-6">
-  
-      <div class="bg-emerald-500/10 border border-emerald-500/30 p-4 rounded-2xl inline-flex flex-col items-center gap-2 text-emerald-400 font-bold text-sm">
-        <div class="flex items-center gap-2">
-          <i data-lucide="check-circle" class="w-5 h-5"></i> Registrasi Berhasil! Poster Roster Resmi Telah Dibuat.
-        </div>
-        <!-- KODE PENDAFTARAN MUNCUL DI SINI -->
-        <div class="text-xs text-slate-300 bg-slate-900/80 px-4 py-2 rounded-xl border border-emerald-500/30 mt-1">
-          Kode Pendaftaran Anda: <span id="displayRegCode" class="text-amber-400 font-mono font-extrabold text-base tracking-wider">---</span>
-        </div>
-      </div>
-  
-       <!-- KANVAS POSTER -->
-      <div class="overflow-x-auto pb-4">
-        <div id="teamPoster" class="mx-auto rounded-3xl p-7 text-white text-left relative overflow-hidden">
-          
-          <div class="absolute -top-24 -right-24 w-60 h-60 bg-indigo-500/20 rounded-full blur-3xl"></div>
-          <div class="absolute -bottom-24 -left-24 w-60 h-60 bg-sky-500/20 rounded-full blur-3xl"></div>
-
-          <!-- Poster Header -->
-          <div class="flex items-center justify-between pb-5 mb-5 border-b border-white/10 relative z-10">
-            <div class="flex items-center gap-4">
-              <div class="w-16 h-16 rounded-2xl bg-slate-800/80 border border-white/10 flex items-center justify-center p-2 overflow-hidden shadow-lg">
-                <img id="pTeamLogo" src="" class="w-full h-full object-contain">
-              </div>
-              <div>
-                <h2 id="pTeamName" class="text-3xl font-extrabold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-300 font-teko uppercase leading-none">
-                  NAMA TIM
-                </h2>
-                <p id="pDeptName" class="text-xs font-semibold text-slate-400 mt-0.5 tracking-wide uppercase">
-                  DEPARTEMEN
-                </p>
-              </div>
-            </div>
-
-            <div class="text-right">
-              <span class="text-[10px] font-bold tracking-widest text-indigo-400 bg-indigo-500/10 border border-indigo-500/30 px-3 py-1 rounded-full uppercase">
-                OFFICIAL ROSTER
-              </span>
-            </div>
-          </div>
-
-          <!-- Section Kapten -->
-          <div class="bg-gradient-to-r from-amber-500/15 to-transparent border-l-4 border-amber-500 rounded-r-2xl p-3.5 mb-5 flex items-center justify-between relative z-10">
-            <div class="flex items-center gap-3.5">
-              <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-amber-500 bg-slate-800 shadow-md">
-                <img id="pCaptainPhoto" src="" class="w-full h-full object-cover">
-              </div>
-              <div>
-                <span class="text-[10px] font-extrabold text-amber-400 tracking-wider uppercase block">KAPTEN TIM</span>
-                <p id="pCaptainName" class="text-sm font-bold text-white tracking-wide leading-tight">-</p>
-                <p id="pCaptainNip" class="text-[10px] text-slate-400">NIP: -</p>
-              </div>
-            </div>
-            <div class="text-right pr-2">
-              <span class="text-xs font-extrabold text-slate-400 block text-right">NO.</span>
-              <span id="pCaptainNo" class="text-2xl font-black text-amber-400 font-teko leading-none">00</span>
-            </div>
-          </div>
-
-          <!-- Grid 14 Pemain -->
-          <div id="pPlayersGrid" class="grid grid-cols-5 gap-2.5 relative z-10"></div>
-
-          <!-- Poster Footer -->
-          <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-[10px] text-slate-400 tracking-wider uppercase relative z-10">
-            <span>REGISTRASI TURNAMEN MINISOCCER PTI</span>
-            <span class="text-indigo-400 font-semibold">VERIFIED ROSTER</span>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- Action Buttons -->
-      <div class="flex items-center justify-center gap-4">
-        <button onclick="downloadPoster()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-lg shadow-emerald-600/30 transition-all flex items-center gap-2 text-sm cursor-pointer">
-          <i data-lucide="download" class="w-4 h-4"></i> Download Poster PNG
-        </button>
-        <button onclick="resetForm()" class="px-6 py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl transition-all flex items-center gap-2 text-sm cursor-pointer">
-          <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Daftarkan Tim Lain
-        </button>
+        </a>
       </div>
 
     </div>
@@ -473,7 +135,7 @@
   <script>
     lucide.createIcons();
 
-    // LIVE COUNTDOWN TIMER KE 07/11/2026 23:59:59
+    // LIVE COUNTDOWN TIMER
     const countDownDate = new Date("November 7, 2026 23:59:59").getTime();
 
     const x = setInterval(function() {
@@ -494,405 +156,16 @@
       document.getElementById("countdownTimer").innerHTML = `${days}h ${hours}j ${minutes}m ${seconds}d`;
     }, 1000);
 
-    const defaultAvatar = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='%23475569'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>";
-
-    // FUNGSI CHECKLIST PERATURAN INTERAKTIF
     function toggleFormButton() {
       const checkbox = document.getElementById('agreeRules');
       const btn = document.getElementById('startFormBtn');
       
       if (checkbox.checked) {
-        btn.disabled = false;
-        btn.style.cursor = 'pointer';
-        btn.className = "w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-lg shadow-indigo-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer";
+        btn.classList.remove('pointer-events-none', 'opacity-60', 'bg-slate-800', 'text-slate-500');
+        btn.classList.add('bg-indigo-600', 'hover:bg-indigo-500', 'text-white', 'shadow-indigo-600/30');
       } else {
-        btn.disabled = true;
-        btn.style.cursor = 'not-allowed';
-        btn.className = "w-full py-4 bg-slate-800 text-slate-500 font-bold rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-not-allowed opacity-60";
-      }
-    }
-
-    // Navigasi Mulai Form
-    function startRegistration() {
-      document.getElementById('rulesArea').classList.add('hidden');
-      document.getElementById('formArea').classList.remove('hidden');
-      goToStep(1);
-    }
-
-    function showRules() {
-      document.getElementById('formArea').classList.add('hidden');
-      document.getElementById('rulesArea').classList.remove('hidden');
-    }
-
-    // Render 14 Input Card Pemain Tambahan (Termasuk NIP)
-    const playersContainer = document.getElementById('playersContainer');
-    for (let i = 1; i <= 14; i++) {
-      playersContainer.innerHTML += `
-        <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-4 transition-all">
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-xs font-bold text-indigo-400 bg-indigo-500/10 px-2.5 py-1 rounded-md">Pemain ${i + 1}</span>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
-            <div>
-              <label class="block text-[11px] font-semibold text-slate-400 mb-1">Nama Pemain *</label>
-              <input type="text" class="playerName custom-input w-full px-3 py-2 rounded-lg text-xs" placeholder="Nama pemain ${i + 1}">
-            </div>
-            <div>
-              <label class="block text-[11px] font-semibold text-slate-400 mb-1">NIP Pemain *</label>
-              <input type="text" class="playerNip custom-input w-full px-3 py-2 rounded-lg text-xs" placeholder="NIP">
-            </div>
-            <div>
-              <label class="block text-[11px] font-semibold text-slate-400 mb-1">Nomor Punggung *</label>
-              <input type="number" class="playerNumber custom-input w-full px-3 py-2 rounded-lg text-xs" placeholder="No. Punggung">
-            </div>
-          </div>
-          <div>
-            <label class="block text-[11px] font-semibold text-slate-400 mb-1">Foto Pemain</label>
-            <input type="file" class="playerPhoto text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 cursor-pointer" accept="image/*">
-          </div>
-        </div>
-      `;
-    }
-
-    // Step Navigation Function
-    function goToStep(step) {
-      document.getElementById('step1').classList.add('hidden');
-      document.getElementById('step2').classList.add('hidden');
-      document.getElementById('step3').classList.add('hidden');
-
-      document.getElementById(`step${step}`).classList.remove('hidden');
-
-      for (let i = 1; i <= 3; i++) {
-        const ind = document.getElementById(`step${i}-indicator`);
-        const num = ind.querySelector('span:first-child');
-        if (i === step) {
-          ind.className = "flex items-center gap-3 text-indigo-400 font-semibold text-sm";
-          num.className = "w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow-md shadow-indigo-600/30";
-        } else if (i < step) {
-          ind.className = "flex items-center gap-3 text-emerald-400 font-medium text-sm";
-          num.className = "w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-sm";
-        } else {
-          ind.className = "flex items-center gap-3 text-slate-500 font-medium text-sm";
-          num.className = "w-8 h-8 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center font-bold text-sm";
-        }
-      }
-    }
-
-    // Handle Image Preview
-    function handleFilePreview(input, previewId, placeholderId) {
-      if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          document.getElementById(previewId).src = e.target.result;
-          document.getElementById(previewId).classList.remove('hidden');
-          document.getElementById(placeholderId).classList.add('hidden');
-        }
-        reader.readAsDataURL(input.files[0]);
-      }
-    }
-
-    // Convert File to Base64
-    function toBase64(file) {
-      return new Promise((resolve) => {
-        if (!file) resolve(null);
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = () => resolve(null);
-      });
-    }
-
-    // FUNGSI VALIDASI NOMOR PUNGGUNG KEMBAR/DUPLIKAT
-    function validatePlayerNumbers() {
-      const numbers = [];
-      
-      const captainNo = document.getElementById('captainNumber').value.trim();
-      if (captainNo !== "") {
-        numbers.push(captainNo);
-      }
-
-      const playerNumberInputs = document.querySelectorAll('.playerNumber');
-      for (let input of playerNumberInputs) {
-        const val = input.value.trim();
-        if (val !== "") {
-          if (numbers.includes(val)) {
-            alert(`Peringatan: Nomor punggung #${val} diinput lebih dari satu kali! Setiap pemain wajib memiliki nomor punggung yang berbeda.`);
-            input.focus();
-            return false;
-          }
-          numbers.push(val);
-        }
-      }
-      return true;
-    }
-
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyQxhmR8dyrpGf_wyyZqspR2-vwCTsvyWeRaWg1ev6v9-AzB3RTyF5gDdk4Ky064fQJEQ/exec";
-    
-    // Submit Form
-    async function submitForm() {
-      if (!validatePlayerNumbers()) {
-        return;
-      }
-
-      const btn = document.getElementById('submitBtn');
-      btn.disabled = true;
-      btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Memproses Poster...`;
-      lucide.createIcons();
-
-      try {
-        const teamNameVal = document.getElementById('teamName').value || "TANPA NAMA";
-        const deptVal = document.getElementById('department').value || "DEPARTEMEN";
-        
-        const teamLogoFile = document.getElementById('teamLogo').files[0];
-        const captainPhotoFile = document.getElementById('captainPhoto').files[0];
-
-        const teamLogoBase64 = await toBase64(teamLogoFile);
-        const captainPhotoBase64 = await toBase64(captainPhotoFile);
-
-        const playerElements = document.querySelectorAll('#playersContainer > div');
-        const players = [];
-        const gridContainer = document.getElementById('pPlayersGrid');
-        gridContainer.innerHTML = "";
-
-        for (let [idx, card] of playerElements.entries()) {
-          const name = card.querySelector('.playerName').value || `Pemain ${idx + 2}`;
-          const nip = card.querySelector('.playerNip').value || "-";
-          const number = card.querySelector('.playerNumber').value || "-";
-          const photoFile = card.querySelector('.playerPhoto').files[0];
-          const photoBase64 = await toBase64(photoFile);
-
-          players.push({ name, nip, number, photo: photoBase64 });
-
-          gridContainer.innerHTML += `
-            <div class="bg-white/5 border border-white/10 rounded-xl p-2 text-center flex flex-col items-center justify-between">
-              <div class="w-full h-14 rounded-lg overflow-hidden bg-slate-800 mb-1.5 border border-white/5">
-                <img src="${photoBase64 || defaultAvatar}" class="w-full h-full object-cover">
-              </div>
-              <div class="w-full">
-                <p class="text-[10px] font-bold text-slate-100 truncate w-full">${name}</p>
-                <p class="text-[9px] text-slate-400 truncate">NIP: ${nip}</p>
-                <p class="text-[11px] font-extrabold text-sky-400 font-teko leading-none">#${number}</p>
-              </div>
-            </div>
-          `;
-        }
-
-        const captainNameVal = document.getElementById('captainName').value || "Kapten Tim";
-        const captainNipVal = document.getElementById('captainNip').value || "-";
-        const captainNoVal = document.getElementById('captainNumber').value || "00";
-
-        document.getElementById('pTeamName').innerText = teamNameVal;
-        document.getElementById('pDeptName').innerText = deptVal;
-        document.getElementById('pTeamLogo').src = teamLogoBase64 || defaultAvatar;
-        document.getElementById('pCaptainName').innerText = captainNameVal;
-        document.getElementById('pCaptainNip').innerText = "NIP: " + captainNipVal;
-        document.getElementById('pCaptainNo').innerText = captainNoVal;
-        document.getElementById('pCaptainPhoto').src = captainPhotoBase64 || defaultAvatar;
-
-        // --- RENDER POSTER MENJADI BASE64 DENGAN HTML2CANVAS ---
-        const posterElem = document.getElementById('teamPoster');
-        // Pastikan area poster sempat terbuka/dirender sebentar agar html2canvas bisa membacanya dengan sempurna
-        document.getElementById('posterResultArea').classList.remove('hidden');
-        
-        const canvas = await html2canvas(posterElem, { scale: 2, backgroundColor: null });
-        const posterBase64 = canvas.toDataURL('image/png');
-
-        // Sembunyikan kembali sementara sampai proses fetch selesai
-        document.getElementById('posterResultArea').classList.add('hidden');
-        const payload = {
-          teamName: teamNameVal,
-          department: deptVal,
-          teamLogo: teamLogoBase64,
-          posterImage: posterBase64,
-          captainName: captainNameVal,
-          captainNip: captainNipVal,
-          captainNumber: captainNoVal,
-          captainPhoto: captainPhotoBase64,
-          players: players
-        };
-
-
-        // Ubah fetch menjadi menggunakan await agar bisa membaca hasil balasan (response)
-        const response = await fetch(GOOGLE_SCRIPT_URL, {
-          method: 'POST',
-          body: JSON.stringify(payload)
-        });
-        
-        const result = await response.json();
-        
-        if (result.status === "success") {
-          // Tampilkan kode pendaftaran unik ke layar
-          document.getElementById('displayRegCode').innerText = result.registrationCode;
-        }
-        document.getElementById('formArea').classList.add('hidden');
-        document.getElementById('posterResultArea').classList.remove('hidden');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-
-      } catch (err) {
-        alert("Terjadi kesalahan: " + err.message);
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = `<i data-lucide="send" class="w-4 h-4"></i> Kirim & Buat Poster`;
-        lucide.createIcons();
-      }
-    }
-
-    // Function Download PNG
-    function downloadPoster() {
-      const posterElem = document.getElementById('teamPoster');
-      html2canvas(posterElem, { scale: 2, backgroundColor: null }).then(canvas => {
-        const link = document.createElement('a');
-        link.download = `Roster_${document.getElementById('pTeamName').innerText}.png`;
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-      });
-    }
-
-    // Function Reset Form
-    function resetForm() {
-      document.getElementById('posterResultArea').classList.add('hidden');
-      document.getElementById('rulesArea').classList.remove('hidden');
-      document.getElementById('registrationForm').reset();
-      
-      // Reset Preview Logo Tim
-      document.getElementById('teamLogoPreview').classList.add('hidden');
-      document.getElementById('teamLogoPreview').src = "";
-      document.getElementById('teamLogoPlaceholder').classList.remove('hidden');
-
-      // Reset Preview Foto Kapten
-      document.getElementById('captainPhotoPreview').classList.add('hidden');
-      document.getElementById('captainPhotoPreview').src = "";
-      document.getElementById('captainPhotoPlaceholder').classList.remove('hidden');
-
-      document.getElementById('agreeRules').checked = false;
-      toggleFormButton();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-      // Fungsi untuk mengecek data tim lewat kode pendaftaran
-      async function checkTeamByCode(registrationCode) {
-        try {
-          // Langsung menggunakan variabel GOOGLE_SCRIPT_URL yang sudah ada di atas
-          const response = await fetch(`${GOOGLE_SCRIPT_URL}?code=${registrationCode}`);
-          const result = await response.json();
-    
-          if (result.status === "not_found") {
-            alert("Kode pendaftaran tidak ditemukan! Periksa kembali kode Anda.");
-            return;
-           }
-      
-          console.log("Tim Ditemukan:", result);
-          alert(`Tim Ditemukan: ${result.team.teamName} (${result.team.department})`);
-    
-        } catch (err) {
-        alert("Gagal memuat data tim.");
-      }
-    }
-
-      // FUNGSI CEK TIM & POSTER BERDASARKAN KODE
-    // ==========================================
-    async function handleCheckTeam() {
-      const codeInput = document.getElementById('searchCodeInput').value.trim();
-      if (!codeInput) {
-        alert("Harap masukkan kode pendaftaran terlebih dahulu!");
-        return;
-      }
-
-      const resultArea = document.getElementById('searchResultArea');
-      const resTeamName = document.getElementById('resTeamName');
-      const resDeptName = document.getElementById('resDeptName');
-      const resPosterImg = document.getElementById('resPosterImg');
-      const resNoPoster = document.getElementById('resNoPoster');
-
-      // Reset tampilan awal
-      resultArea.classList.remove('hidden');
-      resTeamName.innerText = "Mencari data tim...";
-      resDeptName.innerText = "";
-      resPosterImg.classList.add('hidden');
-      resNoPoster.innerText = "Sedang mengambil data dari server...";
-
-      try {
-        const response = await fetch(`${GOOGLE_SCRIPT_URL}?code=${codeInput}`);
-        const result = await response.json();
-
-        if (result.status === "not_found") {
-          resTeamName.innerText = "Tim Tidak Ditemukan";
-          resDeptName.innerText = "Pastikan kode pendaftaran yang Anda masukkan sudah benar.";
-          resNoPoster.innerText = "Tidak ada poster ditemukan.";
-          return;
-        }
-
-        if (result.status === "success") {
-          resTeamName.innerText = `Tim: ${result.team.teamName} (Kode: ${result.team.code})`;
-          resDeptName.innerText = `Departemen: ${result.team.department}`;
-
-         if (result.posterUrl && result.posterUrl.includes("drive.google.com")) {
-            // Ekstraksi ID File Google Drive secara presisi
-            let fileId = "";
-            if (result.posterUrl.includes("/d/")) {
-              fileId = result.posterUrl.split("/d/")[1].split("/")[0].split("?")[0];
-            } else if (result.posterUrl.includes("id=")) {
-              fileId = result.posterUrl.split("id=")[1].split("&")[0];
-            }
-
-            if (fileId) {
-               // Format direct link gambar publik Google Drive
-              resPosterImg.src = `https://lh3.googleusercontent.com/d/${fileId}`;
-              resPosterImg.classList.remove('hidden');
-
-              // --- MUNCULKAN TOMBOL DOWNLOAD ---
-              document.getElementById('downloadPosterBtn').classList.remove('hidden');
-              
-              resNoPoster.innerText = "";
-            } else {
-              resNoPoster.innerText = "Format tautan poster tidak valid.";
-              document.getElementById('downloadPosterBtn').classList.add('hidden');
-            }
-          } else {
-            resNoPoster.innerText = "Poster tidak tersedia atau gagal dimuat.";
-            document.getElementById('downloadPosterBtn').classList.add('hidden');
-          }
-        }
-
-      } catch (err) {
-        console.error(err);
-        resTeamName.innerText = "Terjadi Kesalahan";
-        resDeptName.innerText = "Gagal terhubung ke server database.";
-        resNoPoster.innerText = "";
-      }
-    }
-
-    // Fungsi untuk mendownload poster roster langsung dari Google Drive
-    function downloadPosterImage() {
-      const imgElement = document.getElementById('resPosterImg');
-      const imageUrl = imgElement.src;
-      
-      if (!imageUrl) {
-        alert("Tidak ada poster yang dapat diunduh.");
-        return;
-      }
-
-      try {
-        // Ekstraksi File ID dari URL poster
-        let fileId = "";
-        if (imageUrl.includes("/d/")) {
-          fileId = imageUrl.split("/d/")[1].split("/")[0].split("?")[0];
-        }
-
-        if (fileId) {
-          // Buat elemen <a> sementara dengan URL pemicu download otomatis Google Drive
-          const downloadUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
-          const a = document.createElement('a');
-          a.href = downloadUrl;
-          a.target = '_blank';
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-        } else {
-          window.open(imageUrl, '_blank');
-        }
-      } catch (err) {
-        console.error("Gagal mendownload:", err);
-        window.open(imageUrl, '_blank');
+        btn.classList.add('pointer-events-none', 'opacity-60', 'bg-slate-800', 'text-slate-500');
+        btn.classList.remove('bg-indigo-600', 'hover:bg-indigo-500', 'text-white', 'shadow-indigo-600/30');
       }
     }
   </script>
