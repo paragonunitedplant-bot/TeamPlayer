@@ -819,12 +819,20 @@
           resTeamName.innerText = `Tim: ${result.team.teamName} (Kode: ${result.team.code})`;
           resDeptName.innerText = `Departemen: ${result.team.department}`;
 
-          if (result.posterUrl && result.posterUrl.startsWith("http")) {
-            resPosterImg.src = result.posterUrl;
-            resPosterImg.classList.remove('hidden');
-            resNoPoster.innerText = "";
+          if (result.posterUrl && result.posterUrl.includes("drive.google.com")) {
+            // Konversi link Google Drive /view menjadi link direct image /thumbnail
+            const fileIdMatch = result.posterUrl.match(/\/d\/(.*?)\//);
+            if (fileIdMatch && fileIdMatch[1]) {
+              const fileId = fileIdMatch[1];
+              // Menggunakan endpoint thumbnail Google Drive agar langsung tampil di tag <img>
+              resPosterImg.src = `https://drive.google.com/uc?export=view&id=${fileId}`;
+              resPosterImg.classList.remove('hidden');
+              resNoPoster.innerText = "";
+            } else {
+              resNoPoster.innerText = "Gagal memproses tautan poster.";
+            }
           } else {
-            resNoPoster.innerText = "Poster tidak tersedia atau gagal dimuat.";
+            resNoPoster.innerText = "Poster tidak tersedia.";
           }
         }
 
