@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Peraturan Pendaftaran - Turnamen Mini Soccer</title>
+  <title>Pendaftaran Tim Turnamen Mini Soccer</title>
   
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
   
   <style>
@@ -18,6 +20,7 @@
       min-height: 100vh;
     }
 
+    /* Background Glow Effect */
     .glow-bg {
       position: fixed;
       top: 0;
@@ -31,141 +34,200 @@
       z-index: 0;
     }
 
+    /* Glassmorphism Card */
     .glass-card {
       background: rgba(17, 24, 39, 0.85);
       backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
+
+    /* Input Custom Style */
+    .custom-input {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #f8fafc;
+      transition: all 0.25s ease;
+    }
+    .custom-input:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+      outline: none;
+    }
   </style>
 </head>
-<body class="p-4 md:p-8 flex flex-col items-center justify-center relative overflow-x-hidden">
+<body class="p-4 md:p-8 flex flex-col items-center justify-between min-h-screen relative overflow-x-hidden">
 
   <div class="glow-bg"></div>
 
-  <div class="w-full max-w-3xl relative z-10 my-4">
+  <!-- CONTAINER UTAMA -->
+  <div class="w-full max-w-2xl relative z-10 my-auto space-y-6">
     
-    <div id="rulesArea" class="glass-card rounded-2xl p-6 md:p-8 shadow-2xl space-y-6">
+    <!-- HEADER GENERAL -->
+    <div class="text-center">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs font-semibold tracking-wide uppercase mb-3">
+        <i data-lucide="trophy" class="w-4 h-4"></i> Turnamen Minisoccer PTI Plant
+      </div>
+      <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-2">
+        Pendaftaran Tim & Pemain
+      </h1>
+      <p class="text-slate-400 text-sm max-w-md mx-auto">
+        PT Paragon Technology and Innovation
+      </p>
+    </div>
+
+    <!-- KOTAK CEK TIM & POSTER TERDAFTAR -->
+    <div class="glass-card rounded-2xl p-6 md:p-8 shadow-2xl space-y-4">
+      <h3 class="text-lg font-bold text-white flex items-center gap-2">
+        <i data-lucide="search" class="w-5 h-5 text-indigo-400"></i> Cek Tim & Poster Terdaftar
+      </h3>
+      <p class="text-xs text-slate-400">Masukkan kode pendaftaran unik Anda (contoh: PTI-XXXX) untuk melihat detail tim dan poster yang tersimpan.</p>
       
-      <div class="border-b border-slate-800 pb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-        <div>
-          <h2 class="text-xl font-bold text-white flex items-center gap-2">
-            <i data-lucide="file-text" class="w-5 h-5 text-indigo-400"></i> Syarat & Peraturan Pendaftaran
-          </h2>
-          <p class="text-xs text-slate-400 mt-1">Harap baca dengan seksama sebelum melakukan pendaftaran tim.</p>
-        </div>
-
-        <div class="bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold px-3.5 py-1.5 rounded-full flex items-center gap-2 shrink-0 shadow-sm">
-          <i data-lucide="clock" class="w-4 h-4 animate-pulse"></i>
-          <span>Batas: <span id="countdownTimer" class="font-mono tracking-wide">Menghitung...</span></span>
-        </div>
+      <div class="flex gap-2">
+        <input type="text" id="searchCodeInput" placeholder="Masukkan Kode (Misal: PTI-1234)" class="custom-input w-full px-4 py-3 rounded-xl text-sm uppercase font-mono tracking-wider">
+        <button onclick="handleCheckTeam()" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl transition-all flex items-center gap-2 shrink-0 cursor-pointer shadow-lg">
+          Cek Tim
+        </button>
       </div>
 
-      <!-- DAFTAR PERATURAN -->
-      <div class="space-y-3.5 max-h-[400px] overflow-y-auto pr-2">
-        <div class="flex items-start gap-3 bg-slate-900/60 p-3.5 rounded-xl border border-slate-800">
-          <span class="w-6 h-6 rounded-lg bg-indigo-500/20 text-indigo-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
-          <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-white">Kuota & Jumlah Pemain:</strong> Maksimal 24 tim. Wajib mendaftarkan tepat 15 pemain tiap tim (1 Kapten + 14 Pemain). Jika kurang dari 15 pemain, dianggap <span class="text-rose-400 font-semibold">tidak memenuhi kriteria</span>.</p>
+      <!-- Area Hasil Pencarian Tim -->
+      <div id="searchResultArea" class="hidden mt-4 pt-4 border-t border-slate-800 space-y-4 text-left">
+        <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
+          <h4 id="resTeamName" class="text-base font-bold text-indigo-400">-</h4>
+          <p id="resDeptName" class="text-xs text-slate-300">-</p>
         </div>
-
-        <div class="flex items-start gap-3 bg-slate-900/60 p-3.5 rounded-xl border border-slate-800">
-          <span class="w-6 h-6 rounded-lg bg-indigo-500/20 text-indigo-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
-          <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-white">Batas Waktu Pendaftaran:</strong> Maksimal pendaftaran pada tanggal <span class="text-amber-400 font-semibold">07/11/2026 pukul 23:59 WIB</span>. Setelah waktu tersebut, data yang sudah masuk <span class="text-rose-400 font-semibold">tidak dapat diubah</span>.</p>
-        </div>
-
-        <div class="flex items-start gap-3 bg-slate-900/60 p-3.5 rounded-xl border border-slate-800">
-          <span class="w-6 h-6 rounded-lg bg-indigo-500/20 text-indigo-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
-          <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-white">Slot Departemen:</strong> Jumlah tim per departemen mengikuti jumlah slot yang sudah ditentukan oleh panitia.</p>
-        </div>
-
-        <div class="flex items-start gap-3 bg-slate-900/60 p-3.5 rounded-xl border border-slate-800">
-          <span class="w-6 h-6 rounded-lg bg-indigo-500/20 text-indigo-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">4</span>
-          <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-white">Tim Cadangan:</strong> Jika jumlah tim yang mendaftar melebihi kuota/slot yang sudah ditentukan, maka sisa tim akan dialihkan menjadi <span class="text-sky-400 font-semibold">Tim Cadangan</span>.</p>
-        </div>
-
-        <div class="flex items-start gap-3 bg-slate-900/60 p-3.5 rounded-xl border border-slate-800">
-          <span class="w-6 h-6 rounded-lg bg-indigo-500/20 text-indigo-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">5</span>
-          <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-white">Penggantian Tim Utama:</strong> Jika tim utama tidak mengirimkan data pendaftaran sesuai batas waktu, posisi akan digantikan oleh Tim Cadangan sesuai dengan plantnya.</p>
-        </div>
-
-        <div class="flex items-start gap-3 bg-slate-900/60 p-3.5 rounded-xl border border-slate-800">
-          <span class="w-6 h-6 rounded-lg bg-indigo-500/20 text-indigo-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">6</span>
-          <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-white">Urutan Cadangan Lintas Plant:</strong> Jika tidak ada tim cadangan yang berasal dari plant yang sama, posisi digantikan oleh tim cadangan yang terdaftar paling awal.</p>
-        </div>
-
-        <div class="flex items-start gap-3 bg-slate-900/60 p-3.5 rounded-xl border border-slate-800">
-          <span class="w-6 h-6 rounded-lg bg-indigo-500/20 text-indigo-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">7</span>
-          <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-white">Perubahan Pemain Ditolak:</strong> Permintaan penggantian pemain setelah batas waktu akan membuat tim dianggap <span class="text-rose-400 font-semibold">belum siap</span> dan langsung digantikan oleh tim cadangan. <em>(Kecuali jika pemain bersangkutan sudah tidak bekerja di PTI)</em>.</p>
-        </div>
-
-        <div class="flex items-start gap-3 bg-slate-900/60 p-3.5 rounded-xl border border-slate-800">
-          <span class="w-6 h-6 rounded-lg bg-indigo-500/20 text-indigo-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">8</span>
-          <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-white">Status Karyawan:</strong> Seluruh pemain terdaftar harus merupakan karyawan aktif PT Paragon Technology and Innovation (plant).</p>
-        </div>
-
-        <div class="flex items-start gap-3 bg-slate-900/60 p-3.5 rounded-xl border border-slate-800">
-          <span class="w-6 h-6 rounded-lg bg-indigo-500/20 text-indigo-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">9</span>
-          <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-white">Batasan Departemen:</strong> Tim hanya diperbolehkan mendaftarkan pemain yang berasal dari departemen atau area kerjanya sendiri.</p>
-        </div>
-
-        <div class="flex items-start gap-3 bg-slate-900/60 p-3.5 rounded-xl border border-slate-800">
-          <span class="w-6 h-6 rounded-lg bg-indigo-500/20 text-indigo-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">10</span>
-          <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-white">Eksklusivitas Pemain:</strong> 1 (satu) pemain hanya berhak terdaftar di dalam 1 (satu) tim turnamen.</p>
+        
+        <!-- Bagian untuk menampilkan Poster yang tersimpan di Drive -->
+        <div class="space-y-2">
+          <label class="block text-xs font-bold text-slate-300 uppercase">Poster Roster Tim:</label>
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 text-center space-y-3">
+            <img id="resPosterImg" src="" alt="Poster Roster" class="mx-auto rounded-lg max-h-96 object-contain hidden">
+            <p id="resNoPoster" class="text-xs text-slate-500 py-4">Memuat poster...</p>
+            
+            <button id="downloadPosterBtn" onclick="downloadPosterImage()" class="hidden w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 text-xs cursor-pointer shadow-lg">
+              <i data-lucide="download" class="w-4 h-4"></i> Download Poster Roster
+            </button>
+          </div>
         </div>
       </div>
+    </div>
 
-      <!-- CHECKBOX PERSETUJUAN PERATURAN -->
-      <div class="pt-4 border-t border-slate-800 space-y-4">
-        <label class="flex items-start gap-3 cursor-pointer group bg-slate-900/80 p-3.5 rounded-xl border border-slate-800 hover:border-indigo-500/50 transition-all">
-          <input type="checkbox" id="agreeRules" onchange="toggleFormButton()" class="mt-0.5 w-4 h-4 rounded border-slate-700 text-indigo-600 focus:ring-indigo-500 bg-slate-900 cursor-pointer shrink-0">
-          <span class="text-xs text-slate-300 group-hover:text-white transition-colors leading-relaxed">
-            Saya telah membaca, memahami, dan menyetujui seluruh <strong class="text-indigo-400">10 Peraturan Pendaftaran Turnamen Minisoccer PTI</strong> di atas.
-          </span>
-        </label>
-
-        <!-- TOMBOL LANJUT -->
-        <a id="startFormBtn" href="pendaftaran.html" class="pointer-events-none opacity-60 w-full py-4 bg-slate-800 text-slate-500 font-bold rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
-          Lanjut ke Form Pendaftaran <i data-lucide="arrow-right" class="w-5 h-5"></i>
-        </a>
-      </div>
-
+    <!-- TOMBOL UNTUK DAFTAR TIM BARU (MENGARAH KE PERATURAN) -->
+    <div class="glass-card rounded-2xl p-6 text-center space-y-3 shadow-2xl border border-indigo-500/20">
+      <h3 class="text-base font-bold text-white">Ingin Mendaftarkan Tim Baru?</h3>
+      <p class="text-xs text-slate-400 max-w-md mx-auto">
+        Silakan baca syarat & ketentuan pendaftaran terlebih dahulu sebelum mengisi data tim Anda.
+      </p>
+      
+      <a href="peraturan.html" class="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl transition-all text-xs cursor-pointer shadow-lg shadow-indigo-600/30">
+        <span>Lanjut ke Halaman Peraturan</span>
+        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+      </a>
     </div>
 
   </div>
 
+  <footer class="text-center text-xs text-slate-500 relative z-10 py-4">
+    &copy; 2026 PT Paragon Technology and Innovation Plant.
+  </footer>
+
   <script>
     lucide.createIcons();
 
-    // LIVE COUNTDOWN TIMER
-    const countDownDate = new Date("November 7, 2026 23:59:59").getTime();
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyQxhmR8dyrpGf_wyyZqspR2-vwCTsvyWeRaWg1ev6v9-AzB3RTyF5gDdk4Ky064fQJEQ/exec";
 
-    const x = setInterval(function() {
-      const now = new Date().getTime();
-      const distance = countDownDate - now;
-
-      if (distance < 0) {
-        clearInterval(x);
-        document.getElementById("countdownTimer").innerHTML = "Pendaftaran Ditutup";
+    async function handleCheckTeam() {
+      const codeInput = document.getElementById('searchCodeInput').value.trim();
+      if (!codeInput) {
+        alert("Harap masukkan kode pendaftaran terlebih dahulu!");
         return;
       }
 
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      const resultArea = document.getElementById('searchResultArea');
+      const resTeamName = document.getElementById('resTeamName');
+      const resDeptName = document.getElementById('resDeptName');
+      const resPosterImg = document.getElementById('resPosterImg');
+      const resNoPoster = document.getElementById('resNoPoster');
+      const downloadBtn = document.getElementById('downloadPosterBtn');
 
-      document.getElementById("countdownTimer").innerHTML = `${days}h ${hours}j ${minutes}m ${seconds}d`;
-    }, 1000);
+      resultArea.classList.remove('hidden');
+      resTeamName.innerText = "Mencari data tim...";
+      resDeptName.innerText = "";
+      resPosterImg.classList.add('hidden');
+      downloadBtn.classList.add('hidden');
+      resNoPoster.innerText = "Sedang mengambil data dari server...";
 
-    function toggleFormButton() {
-      const checkbox = document.getElementById('agreeRules');
-      const btn = document.getElementById('startFormBtn');
+      try {
+        const response = await fetch(`${GOOGLE_SCRIPT_URL}?code=${codeInput}`);
+        const result = await response.json();
+
+        if (result.status === "not_found") {
+          resTeamName.innerText = "Tim Tidak Ditemukan";
+          resDeptName.innerText = "Pastikan kode pendaftaran yang Anda masukkan sudah benar.";
+          resNoPoster.innerText = "Tidak ada poster ditemukan.";
+          return;
+        }
+
+        if (result.status === "success") {
+          resTeamName.innerText = `Tim: ${result.team.teamName} (Kode: ${result.team.code})`;
+          resDeptName.innerText = `Departemen: ${result.team.department}`;
+
+          if (result.posterUrl && result.posterUrl.includes("drive.google.com")) {
+            let fileId = "";
+            if (result.posterUrl.includes("/d/")) {
+              fileId = result.posterUrl.split("/d/")[1].split("/")[0].split("?")[0];
+            } else if (result.posterUrl.includes("id=")) {
+              fileId = result.posterUrl.split("id=")[1].split("&")[0];
+            }
+
+            if (fileId) {
+              resPosterImg.src = `https://lh3.googleusercontent.com/d/${fileId}`;
+              resPosterImg.classList.remove('hidden');
+              downloadBtn.classList.remove('hidden');
+              resNoPoster.innerText = "";
+            } else {
+              resNoPoster.innerText = "Format tautan poster tidak valid.";
+            }
+          } else {
+            resNoPoster.innerText = "Poster tidak tersedia atau gagal dimuat.";
+          }
+        }
+      } catch (err) {
+        console.error(err);
+        resTeamName.innerText = "Terjadi Kesalahan";
+        resDeptName.innerText = "Gagal terhubung ke server database.";
+        resNoPoster.innerText = "";
+      }
+    }
+
+    function downloadPosterImage() {
+      const imgElement = document.getElementById('resPosterImg');
+      const imageUrl = imgElement.src;
       
-      if (checkbox.checked) {
-        btn.classList.remove('pointer-events-none', 'opacity-60', 'bg-slate-800', 'text-slate-500');
-        btn.classList.add('bg-indigo-600', 'hover:bg-indigo-500', 'text-white', 'shadow-indigo-600/30');
-      } else {
-        btn.classList.add('pointer-events-none', 'opacity-60', 'bg-slate-800', 'text-slate-500');
-        btn.classList.remove('bg-indigo-600', 'hover:bg-indigo-500', 'text-white', 'shadow-indigo-600/30');
+      if (!imageUrl) {
+        alert("Tidak ada poster yang dapat diunduh.");
+        return;
+      }
+
+      try {
+        let fileId = "";
+        if (imageUrl.includes("/d/")) {
+          fileId = imageUrl.split("/d/")[1].split("/")[0].split("?")[0];
+        }
+
+        if (fileId) {
+          const downloadUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+          const a = document.createElement('a');
+          a.href = downloadUrl;
+          a.target = '_blank';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        } else {
+          window.open(imageUrl, '_blank');
+        }
+      } catch (err) {
+        console.error("Gagal mendownload:", err);
+        window.open(imageUrl, '_blank');
       }
     }
   </script>
