@@ -621,6 +621,8 @@
       return true;
     }
 
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyQxhmR8dyrpGf_wyyZqspR2-vwCTsvyWeRaWg1ev6v9-AzB3RTyF5gDdk4Ky064fQJEQ/exec";
+    
     // Submit Form
     async function submitForm() {
       if (!validatePlayerNumbers()) {
@@ -704,7 +706,6 @@
           players: players
         };
 
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyQxhmR8dyrpGf_wyyZqspR2-vwCTsvyWeRaWg1ev6v9-AzB3RTyF5gDdk4Ky064fQJEQ/exec";
 
         // Ubah fetch menjadi menggunakan await agar bisa membaca hasil balasan (response)
         const response = await fetch(GOOGLE_SCRIPT_URL, {
