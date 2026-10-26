@@ -61,7 +61,7 @@
       </div>
 
       <!-- DAFTAR PERATURAN -->
-      <div class="space-y-3.5 max-h-[400px] overflow-y-auto pr-2">
+      <div class="space-y-3.5 max-h-[500px] overflow-y-auto pr-2">
         <div class="flex items-start gap-3 bg-slate-900/60 p-3.5 rounded-xl border border-slate-800">
           <span class="w-6 h-6 rounded-lg bg-indigo-500/20 text-indigo-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
           <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-white">Kuota & Jumlah Pemain:</strong> Maksimal 24 tim. Wajib mendaftarkan tepat 15 pemain tiap tim (1 Kapten + 14 Pemain). Jika kurang dari 15 pemain, dianggap <span class="text-rose-400 font-semibold">tidak memenuhi kriteria</span>.</p>
@@ -72,9 +72,31 @@
           <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-white">Batas Waktu Pendaftaran:</strong> Maksimal pendaftaran pada tanggal <span class="text-amber-400 font-semibold">07/11/2026 pukul 23:59 WIB</span>. Setelah waktu tersebut, data yang sudah masuk <span class="text-rose-400 font-semibold">tidak dapat diubah</span>.</p>
         </div>
 
-        <div class="flex items-start gap-3 bg-slate-900/60 p-3.5 rounded-xl border border-slate-800">
-          <span class="w-6 h-6 rounded-lg bg-indigo-500/20 text-indigo-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
-          <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-white">Slot Departemen:</strong> Jumlah tim per departemen mengikuti jumlah slot yang sudah ditentukan oleh panitia.</p>
+        <!-- POIN 3: SLOT DEPARTEMEN & TABEL INTERAKTIF -->
+        <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800 space-y-3">
+          <div class="flex items-start gap-3">
+            <span class="w-6 h-6 rounded-lg bg-indigo-500/20 text-indigo-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
+            <p class="text-xs text-slate-300 leading-relaxed"><strong class="text-white">Slot Departemen:</strong> Jumlah tim per departemen mengikuti jumlah slot yang sudah ditentukan oleh panitia.</p>
+          </div>
+
+          <!-- TABEL KUOTA DEPARTEMEN -->
+          <div class="pl-9">
+            <div class="overflow-x-auto rounded-lg border border-slate-800 bg-slate-950/50">
+              <table class="w-full text-xs text-left text-slate-300">
+                <thead class="bg-slate-800/80 text-slate-200 font-bold border-b border-slate-800">
+                  <tr>
+                    <th class="p-2.5">Departemen / Area</th>
+                    <th class="p-2.5 text-center">Kuota</th>
+                    <th class="p-2.5 text-center">Kuota Terisi</th>
+                  </tr>
+                </thead>
+                <tbody id="quotaTableBody" class="divide-y divide-slate-800/60">
+                  <!-- Data Tabel Dimuat via JavaScript -->
+                </tbody>
+              </table>
+            </div>
+            <p class="text-[10px] text-slate-500 mt-1.5 italic">* Data kuota terisi diperbarui secara otomatis dari sistem pendaftaran.</p>
+          </div>
         </div>
 
         <div class="flex items-start gap-3 bg-slate-900/60 p-3.5 rounded-xl border border-slate-800">
@@ -135,7 +157,76 @@
   <script>
     lucide.createIcons();
 
-    // LIVE COUNTDOWN TIMER
+    // 1. DATA DEPARTEMEN & KUOTA DEFAULTS
+    const departmentList = [
+      { name: "Downstream Liquid", quota: 3 },
+      { name: "Downstream Powder", quota: 2 },
+      { name: "Downstream Semsol", quota: 2 },
+      { name: "FM / CREM", quota: 2 },
+      { name: "Logistik 1", quota: 2 },
+      { name: "Logistik 2", quota: 2 },
+      { name: "NDC", quota: 3 },
+      { name: "RND", quota: 1 },
+      { name: "Upstream Liquid", quota: 3 },
+      { name: "Upstream Powder", quota: 2 },
+      { name: "Upstream Semsol", quota: 2 }
+    ];
+
+    // Ganti URL di bawah ini dengan URL Web App Google Apps Script Anda
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby8N-z-e59aQSDREqcY02MzdlL9rucOWLDZ95Ul9uzoeewXRtI1hyRloUCOxieoF3P6Dw/exec";
+
+    // Rendernya Awal (Loading / Default)
+    function renderQuotaTable(filledData = {}) {
+      const tbody = document.getElementById("quotaTableBody");
+      tbody.innerHTML = "";
+
+      departmentList.forEach(dept => {
+        const count = filledData[dept.name] || 0;
+        const isFull = count >= dept.quota;
+
+        const row = document.createElement("tr");
+        row.className = "hover:bg-slate-900/50 transition-colors";
+        row.innerHTML = `
+          <td class="p-2.5 font-medium text-slate-200">${dept.name}</td>
+          <td class="p-2.5 text-center font-semibold text-slate-300">${dept.quota}</td>
+          <td class="p-2.5 text-center">
+            <span class="px-2 py-0.5 rounded-full text-[11px] font-bold ${
+              isFull 
+                ? 'bg-rose-500/10 text-rose-400 border border-rose-500/20' 
+                : count > 0 
+                  ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' 
+                  : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+            }">
+              ${count} / ${dept.quota}
+            </span>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    // Ambil Data Otomatis dari Google Sheet
+    async function fetchQuotaData() {
+      renderQuotaTable(); // Tampilkan tabel versi awal dulu
+
+      if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes("PASTE_URL")) return;
+
+      try {
+        const response = await fetch(GOOGLE_SCRIPT_URL);
+        const result = await response.json();
+        
+        if (result.status === "success" && result.data) {
+          renderQuotaTable(result.data);
+        }
+      } catch (error) {
+        console.error("Gagal mengambil data kuota terisi:", error);
+      }
+    }
+
+    // Jalankan Sinkronisasi Otomatis saat halaman dimuat
+    fetchQuotaData();
+
+    // 2. LIVE COUNTDOWN TIMER
     const countDownDate = new Date("November 7, 2026 23:59:59").getTime();
 
     const x = setInterval(function() {
@@ -156,6 +247,7 @@
       document.getElementById("countdownTimer").innerHTML = `${days}h ${hours}j ${minutes}m ${seconds}d`;
     }, 1000);
 
+    // 3. TOGGLE BUTTON AGREEMENT
     function toggleFormButton() {
       const checkbox = document.getElementById('agreeRules');
       const btn = document.getElementById('startFormBtn');
