@@ -142,7 +142,7 @@
   <script>
     lucide.createIcons();
 
-    const GOOGLE_SCRIPT_URL = "/api/submit";
+    const ISI = "/api/submit";
 
     async function handleCheckTeam() {
       const codeInput = document.getElementById('searchCodeInput').value.trim();
@@ -166,7 +166,7 @@
       resNoPoster.innerText = "Sedang mengambil data dari server...";
 
       try {
-        const response = await fetch(`${GOOGLE_SCRIPT_URL}?code=${codeInput}`);
+        const response = await fetch(`${ISI}?code=${codeInput}`);
         const result = await response.json();
 
         if (result.status === "not_found") {
