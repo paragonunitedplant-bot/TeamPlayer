@@ -22,11 +22,12 @@ export default async function handler(req, res) {
       // Pastikan body dipastikan berbentuk objek JSON yang valid
       const bodyData = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
 
+      bodyData.kosongan= KOSONG;
+      
       const response = await fetch(ISI, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'sek-kosong': KOSONG
         },
         body: JSON.stringify(bodyData),
       });
