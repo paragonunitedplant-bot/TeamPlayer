@@ -5,9 +5,9 @@ export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
       const queryString = new URLSearchParams(req.query).toString();
-      const targetUrl = `${ISI}?${queryString}`;
+      const isiNa = `${ISI}?${queryString}`;
       
-      const response = await fetch(targetUrl);
+      const response = await fetch(isiNa);
       const data = await response.json();
       return res.status(200).json(data);
     } catch (error) {
