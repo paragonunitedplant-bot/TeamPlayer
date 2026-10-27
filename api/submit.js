@@ -22,7 +22,7 @@ export default async function handler(req, res) {
       // Pastikan body dipastikan berbentuk objek JSON yang valid
       const bodyData = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
 
-      bodyData.secretKey = KOSONG;
+      bodyData.kosongan = KOSONG;
       
       const response = await fetch(ISI, {
         method: 'POST',
