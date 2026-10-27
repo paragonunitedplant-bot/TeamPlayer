@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzBhEYubF2Y5of5d2yC_fxiS2DKmFQsvjVyz4DIXwBpYb7nXIfDRTPcTiZ_NWvfVYymWw/exec";
+  const GOOGLE_SCRIPT_URL = process.env.GOOGLE_SCRIPT_URL;
 
   // 1. Tangani Method GET (Cek Tim / Kuota)
   if (req.method === 'GET') {
