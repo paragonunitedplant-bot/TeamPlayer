@@ -1,10 +1,9 @@
 export default async function handler(req, res) {
   const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzBhEYubF2Y5of5d2yC_fxiS2DKmFQsvjVyz4DIXwBpYb7nXIfDRTPcTiZ_NWvfVYymWw/exec";
 
-  // 1. Jika method adalah GET (Digunakan untuk "Cek Tim" atau "Update Kuota")
+  // 1. Tangani Method GET (Cek Tim / Kuota)
   if (req.method === 'GET') {
     try {
-      // Mengambil parameter query (bisa berupa action=check atau action=quota, dsb)
       const queryString = new URLSearchParams(req.query).toString();
       const targetUrl = `${GOOGLE_SCRIPT_URL}?${queryString}`;
       
@@ -16,15 +15,18 @@ export default async function handler(req, res) {
     }
   }
 
-  // 2. Jika method adalah POST (Digunakan untuk Submit Pendaftaran)
+  // 2. Tangani Method POST (Submit Pendaftaran Form)
   if (req.method === 'POST') {
     try {
+      // Pastikan body dipastikan berbentuk objek JSON yang valid
+      const bodyData = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+
       const response = await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(req.body),
+        body: JSON.stringify(bodyData),
       });
 
       const data = await response.json();
