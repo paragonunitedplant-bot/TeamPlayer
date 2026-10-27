@@ -1,11 +1,11 @@
 export default async function handler(req, res) {
-  const GOOGLE_SCRIPT_URL = process.env.ISI;
+  const ISI = process.env.ISI;
 
   // 1. Tangani Method GET (Cek Tim / Kuota)
   if (req.method === 'GET') {
     try {
       const queryString = new URLSearchParams(req.query).toString();
-      const targetUrl = `${GOOGLE_SCRIPT_URL}?${queryString}`;
+      const targetUrl = `${ISI}?${queryString}`;
       
       const response = await fetch(targetUrl);
       const data = await response.json();
@@ -21,7 +21,7 @@ export default async function handler(req, res) {
       // Pastikan body dipastikan berbentuk objek JSON yang valid
       const bodyData = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
 
-      const response = await fetch(GOOGLE_SCRIPT_URL, {
+      const response = await fetch(ISI, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
