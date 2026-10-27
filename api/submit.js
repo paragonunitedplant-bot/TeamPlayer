@@ -26,7 +26,7 @@ export default async function handler(req, res) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Secret-Token': KOSONG
+          'sek-kosong': KOSONG
         },
         body: JSON.stringify(bodyData),
       });
