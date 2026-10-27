@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-  const GOOGLE_SCRIPT_URL = process.env.GOOGLE_SCRIPT_URL;
+  const GOOGLE_SCRIPT_URL = process.env.ISI;
 
   // 1. Tangani Method GET (Cek Tim / Kuota)
   if (req.method === 'GET') {
