@@ -29,7 +29,7 @@
       position: fixed;
       top: 0;
       left: 50%;
-      transform: translateX(-50%);
+      transform: tranneutralX(-50%);
       width: 100%;
       max-width: 1200px;
       height: 600px;
@@ -79,7 +79,7 @@
       <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-2">
         Pendaftaran Tim & Pemain
       </h1>
-      <p class="text-slate-400 text-sm max-w-md mx-auto">
+      <p class="text-neutral-400 text-sm max-w-md mx-auto">
         PT Paragon Technology and Innovation
       </p>
     </div>
@@ -89,7 +89,7 @@
       <h3 class="text-lg font-bold text-white flex items-center gap-2">
         <i data-lucide="search" class="w-5 h-5 text-yellow-400"></i> Cek Tim & Poster Terdaftar
       </h3>
-      <p class="text-xs text-slate-400">Masukkan kode pendaftaran unik Anda (contoh: PTI-XXXX) untuk melihat detail tim dan poster yang tersimpan.</p>
+      <p class="text-xs text-neutral-400">Masukkan kode pendaftaran unik Anda (contoh: PTI-XXXX) untuk melihat detail tim dan poster yang tersimpan.</p>
       
       <div class="flex gap-2">
         <input type="text" id="searchCodeInput" placeholder="Masukkan Kode (Misal: PTI-1234)" class="custom-input w-full px-4 py-3 rounded-xl text-sm uppercase font-mono tracking-wider">
@@ -99,18 +99,18 @@
       </div>
 
       <!-- Area Hasil Pencarian Tim -->
-      <div id="searchResultArea" class="hidden mt-4 pt-4 border-t border-slate-800 space-y-4 text-left">
-        <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
+      <div id="searchResultArea" class="hidden mt-4 pt-4 border-t border-neutral-800 space-y-4 text-left">
+        <div class="bg-neutral-900/80 p-4 rounded-xl border border-neutral-800 space-y-2">
           <h4 id="resTeamName" class="text-base font-bold text-yellow-400">-</h4>
-          <p id="resDeptName" class="text-xs text-slate-300">-</p>
+          <p id="resDeptName" class="text-xs text-neutral-300">-</p>
         </div>
         
         <!-- Bagian untuk menampilkan Poster yang tersimpan di Drive -->
         <div class="space-y-2">
-          <label class="block text-xs font-bold text-slate-300 uppercase">Poster Tim:</label>
-          <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 text-center space-y-3">
+          <label class="block text-xs font-bold text-neutral-300 uppercase">Poster Tim:</label>
+          <div class="bg-neutral-900 border border-neutral-800 rounded-xl p-3 text-center space-y-3">
             <img id="resPosterImg" src="" alt="Poster Roster" class="mx-auto rounded-lg max-h-96 object-contain hidden">
-            <p id="resNoPoster" class="text-xs text-slate-500 py-4">Memuat poster...</p>
+            <p id="resNoPoster" class="text-xs text-neutral-500 py-4">Memuat poster...</p>
             
             <button id="downloadPosterBtn" onclick="downloadPosterImage()" class="hidden w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 text-xs cursor-pointer shadow-lg">
               <i data-lucide="download" class="w-4 h-4"></i> Download Poster
@@ -123,7 +123,7 @@
     <!-- TOMBOL UNTUK DAFTAR TIM BARU (MENGARAH KE PERATURAN) -->
     <div class="glass-card rounded-2xl p-6 text-center space-y-3 shadow-2xl border border-yellow-500/20">
       <h3 class="text-base font-bold text-white">Ingin Mendaftarkan Tim Baru?</h3>
-      <p class="text-xs text-slate-400 max-w-md mx-auto">
+      <p class="text-xs text-neutral-400 max-w-md mx-auto">
         Silahkan mengisi data tim Anda, jangan lupa siapkan logo tim dan foto pemain.
       </p>
       
@@ -135,7 +135,7 @@
 
   </div>
 
-  <footer class="text-center text-xs text-slate-500 relative z-10 py-4">
+  <footer class="text-center text-xs text-neutral-500 relative z-10 py-4">
     &copy; 2026 SPORT COMMUNITY CUP PLANT - PARAGON UNITED PLANT.
   </footer>
 
