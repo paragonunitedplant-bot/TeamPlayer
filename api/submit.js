@@ -1,5 +1,6 @@
 export default async function handler(req, res) {
   const ISI = process.env.ISI;
+  const KOSONG = process.env.KOSONG;
 
   // 1. Tangani Method GET (Cek Tim / Kuota)
   if (req.method === 'GET') {
@@ -25,6 +26,7 @@ export default async function handler(req, res) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'X-Secret-Token': KOSONG
         },
         body: JSON.stringify(bodyData),
       });
