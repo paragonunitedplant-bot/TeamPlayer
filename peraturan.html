@@ -178,7 +178,8 @@
     // Rendernya Awal (Loading / Default)
     function renderQuotaTable(filledData = {}) {
       const tbody = document.getElementById("quotaTableBody");
-    
+      tbody.innerHTML = "";
+      
       // Kalau filledData masih kosong (pas pertama load), tampilkan teks loading sebentar
       if (Object.keys(filledData).length === 0) {
         tbody.innerHTML = `<tr><td colspan="3" class="text-center p-4 text-slate-400 text-xs">Memuat data kuota dari server...</td></tr>`;
