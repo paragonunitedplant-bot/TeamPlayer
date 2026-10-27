@@ -176,7 +176,7 @@
     ];
 
     // Ganti URL di bawah ini dengan URL Web App Google Apps Script Anda
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzBhEYubF2Y5of5d2yC_fxiS2DKmFQsvjVyz4DIXwBpYb7nXIfDRTPcTiZ_NWvfVYymWw/exec";
+    const ISI = "https://script.google.com/macros/s/AKfycbzBhEYubF2Y5of5d2yC_fxiS2DKmFQsvjVyz4DIXwBpYb7nXIfDRTPcTiZ_NWvfVYymWw/exec";
 
     // Rendernya Awal (Loading / Default)
     function renderQuotaTable(filledData = {}) {
@@ -218,10 +218,10 @@
     async function fetchQuotaData() {
       renderQuotaTable(); // Tampilkan tabel versi awal dulu
 
-      if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes("PASTE_URL")) return;
+      if (!ISI || ISI.includes("PASTE_URL")) return;
 
       try {
-        const response = await fetch(GOOGLE_SCRIPT_URL);
+        const response = await fetch(ISI);
         const result = await response.json();
         
         if (result.status === "success" && result.data) {
