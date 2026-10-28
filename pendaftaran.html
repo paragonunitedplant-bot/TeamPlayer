@@ -114,7 +114,7 @@
         </div>
       </div>
 
-      <form id="registrationForm" onsubmit="event.preventDefault();">
+      <form id="registrationForm" onsubmit="event.preventDefault(); submitForm();">
         
         <!-- STEP 1: INFO TIM -->
         <div id="step1" class="space-y-5">
@@ -148,7 +148,7 @@
           <div>
             <label class="block text-xs font-bold text-neutral-300 uppercase tracking-wider mb-2">Logo Tim</label>
             <div class="upload-box rounded-xl p-4 text-center cursor-pointer relative" onclick="document.getElementById('teamLogo').click()">
-              <input type="file" id="teamLogo" accept="image/*" class="hidden" onchange="handleFilePreview(this, 'teamLogoPreview', 'teamLogoPlaceholder')">
+              <input type="file" id="teamLogo" accept="image/*" class="hidden" onchange="handleFilePreview(this, 'teamLogoPreview', 'teamLogoPlaceholder')" required>
               <div id="teamLogoPlaceholder" class="space-y-1">
                 <i data-lucide="image-plus" class="w-8 h-8 text-yellow-400 mx-auto"></i>
                 <p class="text-xs text-neutral-300 font-medium">Klik atau drop logo di sini</p>
@@ -162,7 +162,7 @@
             <a href="peraturan.html" class="w-1/3 py-3.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 font-semibold rounded-xl transition-all text-center">
               Peraturan
             </a>
-            <button type="button" onclick="goToStep(2)" class="w-2/3 py-3.5 bg-yellow-600 hover:bg-yellow-500 text-white font-bold rounded-xl shadow-lg shadow-yellow-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer">
+            <button type="button" onclick="validateAndNextStep(2)" class="w-2/3 py-3.5 bg-yellow-600 hover:bg-yellow-500 text-white font-bold rounded-xl shadow-lg shadow-yellow-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer">
               Lanjut ke Data Kapten <i data-lucide="arrow-right" class="w-4 h-4"></i>
             </button>
           </div>
@@ -192,7 +192,7 @@
           <div>
             <label class="block text-xs font-bold text-neutral-300 uppercase tracking-wider mb-2">Foto Kapten</label>
             <div class="upload-box rounded-xl p-4 text-center cursor-pointer relative" onclick="document.getElementById('captainPhoto').click()">
-              <input type="file" id="captainPhoto" accept="image/*" class="hidden" onchange="handleFilePreview(this, 'captainPhotoPreview', 'captainPhotoPlaceholder')">
+              <input type="file" id="captainPhoto" accept="image/*" class="hidden" onchange="handleFilePreview(this, 'captainPhotoPreview', 'captainPhotoPlaceholder')" required>
               <div id="captainPhotoPlaceholder" class="space-y-1">
                 <i data-lucide="user-plus" class="w-8 h-8 text-amber-400 mx-auto"></i>
                 <p class="text-xs text-neutral-300 font-medium">Upload foto kapten</p>
@@ -206,7 +206,7 @@
             <button type="button" onclick="goToStep(1)" class="w-1/3 py-3.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 font-semibold rounded-xl transition-all cursor-pointer">
               Kembali
             </button>
-            <button type="button" onclick="goToStep(3)" class="w-2/3 py-3.5 bg-yellow-600 hover:bg-yellow-500 text-white font-bold rounded-xl shadow-lg shadow-yellow-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer">
+            <button type="button" onclick="validateAndNextStep(3)" class="w-2/3 py-3.5 bg-yellow-600 hover:bg-yellow-500 text-white font-bold rounded-xl shadow-lg shadow-yellow-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer">
               Lanjut ke Data Pemain <i data-lucide="arrow-right" class="w-4 h-4"></i>
             </button>
           </div>
@@ -227,7 +227,7 @@
             <button type="button" onclick="goToStep(2)" class="w-1/3 py-3.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 font-semibold rounded-xl transition-all cursor-pointer">
               Kembali
             </button>
-            <button type="button" id="submitBtn" onclick="submitForm()" class="w-2/3 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-lg shadow-emerald-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer">
+            <button type="submit" id="submitBtn" class="w-2/3 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-lg shadow-emerald-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer">
               <i data-lucide="send" class="w-4 h-4"></i> Kirim & Buat Poster
             </button>
           </div>
@@ -335,15 +335,15 @@
           <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
             <div>
               <label class="block text-[11px] font-semibold text-neutral-400 mb-1">Nama Pemain *</label>
-              <input type="text" class="playerName custom-input w-full px-3 py-2 rounded-lg text-xs" placeholder="Nama pemain ${i + 1}">
+              <input type="text" class="playerName custom-input w-full px-3 py-2 rounded-lg text-xs" placeholder="Nama pemain ${i + 1}" required>
             </div>
             <div>
               <label class="block text-[11px] font-semibold text-neutral-400 mb-1">NIP Pemain *</label>
-              <input type="text" class="playerNip custom-input w-full px-3 py-2 rounded-lg text-xs" placeholder="NIP">
+              <input type="text" class="playerNip custom-input w-full px-3 py-2 rounded-lg text-xs" placeholder="NIP" required>
             </div>
             <div>
               <label class="block text-[11px] font-semibold text-neutral-400 mb-1">Nomor Punggung *</label>
-              <input type="number" class="playerNumber custom-input w-full px-3 py-2 rounded-lg text-xs" placeholder="No. Punggung">
+              <input type="number" class="playerNumber custom-input w-full px-3 py-2 rounded-lg text-xs" placeholder="No. Punggung" required>
             </div>
           </div>
           <div>
@@ -419,6 +419,28 @@
       return true;
     }
 
+    function validateAndNextStep(targetStep) {
+      let currentStepElem;
+      if (targetStep === 2) {
+        currentStepElem = document.getElementById('step1');
+      } else if (targetStep === 3) {
+        currentStepElem = document.getElementById('step2');
+      }
+
+      // Cari semua input yang wajib diisi (required) di step saat ini
+      const inputs = currentStepElem.querySelectorAll('[required]');
+      for (let input of inputs) {
+        if (!input.value.trim()) {
+          input.reportValidity(); // Memunculkan peringatan bawaan browser (misal: "Please fill out this field")
+          input.focus();
+          return;
+        }
+      }
+
+      // Jika lolos, pindah ke step berikutnya
+      goToStep(targetStep);
+    }
+    
     async function submitForm() {
       if (!validatePlayerNumbers()) return;
 
