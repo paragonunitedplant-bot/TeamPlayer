@@ -149,7 +149,7 @@ Lengkapi data tim dan pemain di bawah ini.
 <div>
 <label class="block text-xs font-bold text-neutral-300 uppercase tracking-wider mb-2">Logo Tim</label>
 <div class="upload-box rounded-xl p-4 text-center cursor-pointer relative" onclick="document.getElementById('teamLogo').click()">
-<input type="file" id="teamLogo" accept="image/*" class="hidden" onchange="handleFilePreview(this, 'teamLogoPreview', 'teamLogoPlaceholder')" required>
+<input type="file" id="teamLogo" accept="image/*" class="hidden" onchange="handleFilePreview(this, 'teamLogoPreview', 'teamLogoPlaceholder')">
 <div id="teamLogoPlaceholder" class="space-y-1">
 <i data-lucide="image-plus" class="w-8 h-8 text-yellow-400 mx-auto"></i>
 <p class="text-xs text-neutral-300 font-medium">Klik atau drop logo di sini</p>
@@ -163,7 +163,7 @@ Lengkapi data tim dan pemain di bawah ini.
 <a href="peraturan.html" class="w-1/3 py-3.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 font-semibold rounded-xl transition-all text-center">
 Peraturan
 </a>
-<button type="button" onclick="validateAndNextStep(2)" class="w-2/3 py-3.5 bg-yellow-600 hover:bg-yellow-500 text-white font-bold rounded-xl shadow-lg shadow-yellow-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer">
+<button type="button" onclick="goToStep(2)" class="w-2/3 py-3.5 bg-yellow-600 hover:bg-yellow-500 text-white font-bold rounded-xl shadow-lg shadow-yellow-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer">
 Lanjut ke Data Kapten <i data-lucide="arrow-right" class="w-4 h-4"></i>
 </button>
 </div>
@@ -193,7 +193,7 @@ Lanjut ke Data Kapten <i data-lucide="arrow-right" class="w-4 h-4"></i>
 <div>
 <label class="block text-xs font-bold text-neutral-300 uppercase tracking-wider mb-2">Foto Kapten</label>
 <div class="upload-box rounded-xl p-4 text-center cursor-pointer relative" onclick="document.getElementById('captainPhoto').click()">
-<input type="file" id="captainPhoto" accept="image/*" class="hidden" onchange="handleFilePreview(this, 'captainPhotoPreview', 'captainPhotoPlaceholder')" required>
+<input type="file" id="captainPhoto" accept="image/*" class="hidden" onchange="handleFilePreview(this, 'captainPhotoPreview', 'captainPhotoPlaceholder')">
 <div id="captainPhotoPlaceholder" class="space-y-1">
 <i data-lucide="user-plus" class="w-8 h-8 text-amber-400 mx-auto"></i>
 <p class="text-xs text-neutral-300 font-medium">Upload foto kapten</p>
@@ -207,7 +207,7 @@ Lanjut ke Data Kapten <i data-lucide="arrow-right" class="w-4 h-4"></i>
 <button type="button" onclick="goToStep(1)" class="w-1/3 py-3.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 font-semibold rounded-xl transition-all cursor-pointer">
 Kembali
 </button>
-<button type="button" onclick="validateAndNextStep(3)" class="w-2/3 py-3.5 bg-yellow-600 hover:bg-yellow-500 text-white font-bold rounded-xl shadow-lg shadow-yellow-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer">
+<button type="button" onclick="goToStep(3)" class="w-2/3 py-3.5 bg-yellow-600 hover:bg-yellow-500 text-white font-bold rounded-xl shadow-lg shadow-yellow-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer">
 Lanjut ke Data Pemain <i data-lucide="arrow-right" class="w-4 h-4"></i>
 </button>
 </div>
@@ -336,20 +336,20 @@ playersContainer.innerHTML += `
          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
            <div>
              <label class="block text-[11px] font-semibold text-neutral-400 mb-1">Nama Pemain *</label>
-             <input type="text" class="playerName custom-input w-full px-3 py-2 rounded-lg text-xs" placeholder="Nama pemain ${i + 1}" required>
+             <input type="text" class="playerName custom-input w-full px-3 py-2 rounded-lg text-xs" placeholder="Nama pemain ${i + 1}">
            </div>
            <div>
              <label class="block text-[11px] font-semibold text-neutral-400 mb-1">NIP Pemain *</label>
-             <input type="text" class="playerNip custom-input w-full px-3 py-2 rounded-lg text-xs" placeholder="NIP" required>
+             <input type="text" class="playerNip custom-input w-full px-3 py-2 rounded-lg text-xs" placeholder="NIP">
            </div>
            <div>
              <label class="block text-[11px] font-semibold text-neutral-400 mb-1">Nomor Punggung *</label>
-             <input type="number" class="playerNumber custom-input w-full px-3 py-2 rounded-lg text-xs" placeholder="No. Punggung" required>
+             <input type="number" class="playerNumber custom-input w-full px-3 py-2 rounded-lg text-xs" placeholder="No. Punggung">
            </div>
          </div>
          <div>
            <label class="block text-[11px] font-semibold text-neutral-400 mb-1">Foto Pemain</label>
-           <input type="file" class="playerPhoto text-xs text-neutral-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-yellow-600 file:text-white hover:file:bg-yellow-500 cursor-pointer" accept="image/*" required>
+           <input type="file" class="playerPhoto text-xs text-neutral-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-yellow-600 file:text-white hover:file:bg-yellow-500 cursor-pointer" accept="image/*">
          </div>
        </div>
      `;
@@ -398,28 +398,6 @@ reader.readAsDataURL(file);
 reader.onload = () => resolve(reader.result);
 reader.onerror = () => resolve(null);
 });
-}
-// Fungsi untuk memastikan input pada step aktif sudah terisi sebelum pindah step
-function validateAndNextStep(targetStep) {
-  let currentStepElem;
-  if (targetStep === 2) {
-   currentStepElem = document.getElementById('step1');
-  } else if (targetStep === 3) {
-    currentStepElem = document.getElementById('step2');
-  }
-
-  // Cari semua input yang wajib diisi (required) di step saat ini
-  const inputs = currentStepElem.querySelectorAll('[required]');
-  for (let input of inputs) {
-    if (!input.value.trim()) {
-      input.reportValidity(); // Memunculkan peringatan bawaan browser (misal: "Please fill out this field")
-      input.focus();
-      return;
-    }
-  }
-
-  // Jika lolos, pindah ke step berikutnya
-  goToStep(targetStep);
 }
   
 function validatePlayerNumbers() {
