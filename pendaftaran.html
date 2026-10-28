@@ -399,7 +399,29 @@ reader.onload = () => resolve(reader.result);
 reader.onerror = () => resolve(null);
 });
 }
+// Fungsi untuk memastikan input pada step aktif sudah terisi sebelum pindah step
+function validateAndNextStep(targetStep) {
+  let currentStepElem;
+  if (targetStep === 2) {
+   currentStepElem = document.getElementById('step1');
+  } else if (targetStep === 3) {
+    currentStepElem = document.getElementById('step2');
+  }
 
+  // Cari semua input yang wajib diisi (required) di step saat ini
+  const inputs = currentStepElem.querySelectorAll('[required]');
+  for (let input of inputs) {
+    if (!input.value.trim()) {
+      input.reportValidity(); // Memunculkan peringatan bawaan browser (misal: "Please fill out this field")
+      input.focus();
+      return;
+    }
+  }
+
+  // Jika lolos, pindah ke step berikutnya
+  goToStep(targetStep);
+}
+  
 function validatePlayerNumbers() {
 const numbers = [];
 const captainNo = document.getElementById('captainNumber').value.trim();
