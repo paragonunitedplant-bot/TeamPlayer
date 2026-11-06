@@ -141,6 +141,27 @@
 
   <script>
     lucide.createIcons();
+    
+    // ==========================================
+    // SKRIP PEMBATAS WAKTU (KEDALUWARSA OTOMATIS)
+    // ==========================================
+    const targetDate = new Date("2026-11-07T00:00:00+07:00").getTime();
+    const now = new Date().getTime();
+
+    if (now >= targetDate) {
+      // Mengganti seluruh isi halaman jika sudah melewati tanggal 6 Nov 2026 23:59 WIB
+      document.body.innerHTML = `
+        <div style="display: flex; justify-content: center; align-items: center; height: 100vh; font-family: 'Plus Jakarta Sans', sans-serif; text-align: center; background: #161616; color: #f3f4f6; padding: 20px;">
+          <div style="background: rgba(32, 32, 32, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); padding: 40px; border-radius: 20px; max-width: 500px; width: 100%; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);">
+            <h1 style="font-size: 24px; font-weight: 800; color: #fbbd09; margin-bottom: 12px;">Pendaftaran Ditutup</h1>
+            <p style="color: #9ca3af; font-size: 14px; line-height: 1.5; margin-bottom:12px;">Akses dan batas waktu pendaftaran Turnamen Mini Soccer PTI Plant telah berakhir pada 6 November 2026 23:59.</p>
+            <p style="color: #9ca3af; font-size: 14px; line-height: 1.5;">Info lebih lanjut akan diumumkan pada hari Minggu, 8 November 2026 .</p>
+
+          </div>
+        </div>
+      `;
+    }
+    // ==========================================
 
     const ISI = "/api/submit";
 
